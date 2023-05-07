@@ -18,9 +18,14 @@ body > div:first-child {
 }
 main {
   flex: 1;
-  /* min-height: 100vh; */
 }
 
+
+header nav ul {
+  display: flex;
+  flex-direction: row;
+  gap: 0.25rem;
+}
 header nav ul li.active a {
   background-color: var(--primary-focus);
 }

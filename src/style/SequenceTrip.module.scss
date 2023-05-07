@@ -1,0 +1,89 @@
+.sequenceTrip {
+  flex: 1;
+  min-height: 55vh;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 1rem 0;
+
+  .heading {
+    margin-bottom: 0.5rem;
+  }
+
+  .sequenceTripForm {
+    display: flex;
+    gap: 0.5rem;
+
+    input,
+    button {
+      margin-bottom: 0;
+    }
+  }
+
+  .addButton {
+    max-width: 100px;
+  }
+
+  .clearButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    color: var(--secondary);
+
+    svg {
+      fill: var(--secondary);
+    }
+  }
+
+  .removeButton {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+
+    svg {
+      fill: var(--secondary);
+    }
+  }
+
+  .addressesContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+
+    .addressesHeadingContainer {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .addressesHeading {
+      margin-bottom: 0;
+    }
+  }
+
+  .addresses {
+    padding: 0;
+
+    li {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .sequenceTripButton {
+    margin-top: 0;
+  }
+}

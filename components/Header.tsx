@@ -12,6 +12,7 @@ function Header() {
 
   return (
     <header className="container">
+      <title>Triptimizer</title>
       <nav>
         <ul>
           <li>
