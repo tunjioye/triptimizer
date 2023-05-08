@@ -9,6 +9,7 @@
   padding: 0px;
   background-color: transparent;
   border: none;
+  width: 20px;
 }
 
 body > div:first-child {

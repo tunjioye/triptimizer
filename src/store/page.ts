@@ -1,30 +1,29 @@
-import { AuthUtils } from '@/utils'
-import { entity } from 'simpler-state'
+import { entity, persistence } from 'simpler-state'
+
+export type ColorSchemeType = 'light' | 'dark'
+
+export type PageStoreStateType = {
+  colorScheme: ColorSchemeType
+}
 
 // initial state
-const initialState = {
-  isDarkMode: false,
+const initialState: PageStoreStateType = {
+  colorScheme: 'light',
 }
 
 // entity
-export const auth = entity(initialState)
+export const page = entity(initialState, [persistence('tm_page')])
 
 // entity updaters
-export const setDarkModeEnabled = (payload = false) => {
-  if (payload === false && AuthUtils.getDarkMode()) {
-    AuthUtils.setDarkMode(false)
-  } else if (payload) {
-    AuthUtils.setDarkMode(true)
-  }
-
-  return auth.set((value) => ({
+export const setColorScheme = (payload: ColorSchemeType = 'light') => {
+  return page.set((value) => ({
     ...value,
-    isDarkMode: payload,
+    colorScheme: payload,
   }))
 }
 
 // entity actions
-export const toggleDarkMode = () => {
-  const { isDarkMode } = auth.get()
-  return setDarkModeEnabled(!isDarkMode)
+export const toggleColorScheme = () => {
+  const { colorScheme } = page.get()
+  setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
 }
