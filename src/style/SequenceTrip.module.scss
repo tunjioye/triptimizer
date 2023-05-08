@@ -38,6 +38,11 @@
     svg {
       fill: var(--secondary);
     }
+
+    &:focus svg,
+    &:hover svg {
+      fill: var(--del-color);
+    }
   }
 
   .removeButton {
@@ -52,6 +57,11 @@
 
     svg {
       fill: var(--secondary);
+    }
+
+    &:focus svg,
+    &:hover svg {
+      fill: var(--del-color);
     }
   }
 
