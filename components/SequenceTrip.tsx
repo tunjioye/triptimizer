@@ -55,22 +55,22 @@ function SequenceTrip() {
         <div className={styles.addressesContainer}>
           <div className={styles.addressesHeadingContainer}>
             <h5 className={styles.addressesHeading}>Addresses</h5>
-            <button
-              type="button"
-              className={clsx(styles.clearButton, 'secondary')}
-              onClick={clearAddresses()}
-            >
-              <FaTrash />
-              <span>clear all</span>
-            </button>
+            {addresses.length > 0 && (
+              <button
+                type="button"
+                className={clsx(styles.clearButton, 'secondary')}
+                onClick={clearAddresses()}
+              >
+                <FaTrash />
+                <span>clear all</span>
+              </button>
+            )}
           </div>
           {addresses.length === 0 && <p>No address added yet. Please add address.</p>}
           {addresses.length > 0 && (
             <ol className={styles.addresses}>
               {addresses.map((address, index) => (
                 <li key={index}>
-                  <span>{index + 1}.</span>
-                  <span>{address}</span>
                   <button
                     type="button"
                     className={clsx(styles.removeButton, 'secondary')}
@@ -78,6 +78,8 @@ function SequenceTrip() {
                   >
                     <FaMinusCircle />
                   </button>
+                  <span>{index + 1}.</span>
+                  <span>{address}</span>
                 </li>
               ))}
             </ol>
@@ -94,7 +96,9 @@ function SequenceTrip() {
       <div>
         <h4 className={styles.heading}>Sequence Result</h4>
         <div>
-          <p>Click <b>Sequence Trip</b> button and see the result here.</p>
+          <p>
+            Click <b>Sequence Trip</b> button and see the result here.
+          </p>
         </div>
       </div>
     </div>
