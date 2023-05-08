@@ -91,11 +91,11 @@ function SequenceTrip() {
                 ))}
               </ol>
             )}
-            {addresses.length === 1 && <p>Add at least 2 addresses to sequence trip</p>}
+            {addresses.length === 1 && <p>Add at least 2 addresses to triptimize</p>}
           </div>
 
           <button className={styles.sequenceTripButton} disabled={disableSequenceTripButton}>
-            Sequence Trip
+            Triptimize
           </button>
         </div>
 
@@ -104,7 +104,7 @@ function SequenceTrip() {
           <h4 className={styles.heading}>Sequence Result</h4>
           <div>
             <p>
-              Click <b>Sequence Trip</b> button and see the result here.
+              Click <b>Triptimize</b> button and see the result here.
             </p>
           </div>
         </div>
