@@ -5,12 +5,14 @@ export type ColorSchemeType = 'light' | 'dark'
 export type PageStoreStateType = {
   colorScheme: ColorSchemeType
   addresses: string[]
+  startAddressIndex: number
 }
 
 // initial state
 const initialState: PageStoreStateType = {
   colorScheme: 'light',
   addresses: [],
+  startAddressIndex: -1,
 }
 
 // entity
@@ -28,6 +30,13 @@ export const setAddresses = (addresses: string[] = []) => {
   return page.set((value) => ({
     ...value,
     addresses,
+  }))
+}
+
+export const setStartAddressIndex = (index: number = -1) => {
+  return page.set((value) => ({
+    ...value,
+    startAddressIndex: index,
   }))
 }
 

@@ -54,6 +54,7 @@
     margin: 0;
     background-color: transparent;
     border: none;
+    margin-top: 5px;
 
     svg {
       fill: var(--secondary);
@@ -63,6 +64,21 @@
     &:hover svg {
       fill: var(--del-color);
     }
+  }
+
+  .startHereButton {
+    display: none;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    border: none;
+    margin-left: auto;
+    font-size: 0.75rem;
+    padding: 1px 8px 2px;
+    white-space: nowrap;
+    position: absolute;
+    inset: 2px 0 0;
   }
 
   .addressesContainer {
@@ -89,9 +105,62 @@
     li {
       display: flex;
       gap: 0.5rem;
-      align-items: center;
       margin-bottom: 0.5rem;
+      word-break: break-word;
+
+      label {
+        flex: 1;
+        margin: 0;
+        position: relative;
+
+        p {
+          margin: 0;
+        }
+      }
+
+      &:hover {
+        .startHereButton {
+          display: flex;
+        }
+      }
     }
+  }
+
+  .startAddressIndicator {
+    display: flex;
+    align-items: center;
+    width: fit-content;
+    height: fit-content;
+    margin: 0;
+    border: none;
+    margin-right: auto;
+    font-size: 0.75rem;
+    padding: 0;
+    white-space: nowrap;
+    position: absolute;
+    inset: 4px 0 0;
+    font-weight: bold;
+    background: var(--primary-focus);
+  }
+
+  .startAddress {
+    text-indent: 112px;
+
+    @media (min-width: 576px) {
+      text-indent: 120px;
+    }
+
+    @media (min-width: 768px) {
+      text-indent: 124px;
+    }
+
+    @media (min-width: 992px) {
+      text-indent: 136px;
+    }
+  }
+
+  .clickable {
+    cursor: pointer;
   }
 
   .sequenceTripButton {

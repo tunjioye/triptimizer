@@ -1,14 +1,14 @@
 import React from 'react'
-import styles from '../src/style/SequenceTrip.module.scss'
+import styles from '../src/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
-import { page, setAddresses } from '@/store/page'
+import { page, setAddresses, setStartAddressIndex } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 
 const MAX_NUMBER_OF_ADDRESSES = 10
 
 function SequenceTrip() {
-  const { addresses = [] } = page.use()
+  const { addresses = [], startAddressIndex } = page.use()
   const addAddress = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (addresses.length >= MAX_NUMBER_OF_ADDRESSES) {
@@ -20,9 +20,11 @@ function SequenceTrip() {
   }
   const removeAddress = (index: number) => () => {
     setAddresses(addresses.filter((_, i) => i !== index))
+    if (index === startAddressIndex) setStartAddressIndex()
   }
   const clearAddresses = () => {
     setAddresses([])
+    setStartAddressIndex()
   }
 
   const [address, setAddress] = React.useState<string>('')
@@ -85,8 +87,23 @@ function SequenceTrip() {
                     >
                       <FaMinusCircle />
                     </button>
-                    <span>{index + 1}.</span>
-                    <span>{address}</span>
+                    <label className={clsx({ [styles.clickable]: index !== startAddressIndex })}>
+                      {index === startAddressIndex && (
+                        <span className={clsx(styles.startAddressIndicator)}>START ADDRESS:</span>
+                      )}
+                      <p className={clsx({ [styles.startAddress]: index === startAddressIndex })}>
+                        {index + 1}. {address}
+                      </p>
+                      {index !== startAddressIndex && (
+                        <button
+                          type="button"
+                          className={clsx(styles.startHereButton, 'secondary')}
+                          onClick={() => setStartAddressIndex(index)}
+                        >
+                          Start here
+                        </button>
+                      )}
+                    </label>
                   </li>
                 ))}
               </ol>
