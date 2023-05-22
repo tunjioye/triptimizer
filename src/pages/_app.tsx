@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from 'react'
+import { useEffect } from 'react'
 import type { AppProps } from 'next/app'
 import Header from 'components/Header'
 import Footer from 'components/Footer'

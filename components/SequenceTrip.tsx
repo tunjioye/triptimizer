@@ -4,10 +4,19 @@ import clsx from 'clsx'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import { page, setAddresses, setStartAddressIndex } from '@/store/page'
 import NoSSR from 'react-no-ssr'
+import { GoogleApiWrapper } from 'google-maps-react'
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
+import { publicRuntimeConfig } from '@/config'
+import { GooglePlacesAddress } from '@/schema/types'
 
 const MAX_NUMBER_OF_ADDRESSES = 10
 
 function SequenceTrip() {
+  const [address, setAddress] = React.useState<GooglePlacesAddress | null>(null)
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  //   setAddress(e.target.value)
+  // }
+
   const { addresses = [], startAddressIndex } = page.use()
   const addAddress = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -15,8 +24,11 @@ function SequenceTrip() {
       window.alert('You can add a maximum of 10 addresses.')
       return
     }
+    if (address === null) {
+      return
+    }
     setAddresses([...addresses, address])
-    setAddress('')
+    setAddress(null)
   }
   const removeAddress = (index: number) => () => {
     setAddresses(addresses.filter((_, i) => i !== index))
@@ -25,11 +37,6 @@ function SequenceTrip() {
   const clearAddresses = () => {
     setAddresses([])
     setStartAddressIndex()
-  }
-
-  const [address, setAddress] = React.useState<string>('')
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setAddress(e.target.value)
   }
 
   const disableForm = addresses.length >= MAX_NUMBER_OF_ADDRESSES
@@ -43,14 +50,110 @@ function SequenceTrip() {
           <h4 className={styles.heading}>Sequence</h4>
           {/* address form */}
           <form onSubmit={addAddress} className={styles.sequenceTripForm}>
-            <input
+            {/* <input
               type="text"
               placeholder="Enter address"
               required
               value={address}
               onChange={handleInputChange}
               disabled={disableForm}
-            />
+            /> */}
+            <div style={{ width: 'calc(100% - 100px - 0.5rem)' }}>
+              <GooglePlacesAutocomplete
+                apiKey={publicRuntimeConfig.GOOGLE_MAPS_API_KEY}
+                // apiOptions={{ language: 'en', region: 'ca' }}
+                selectProps={{
+                  value: address,
+                  onChange: setAddress,
+                  required: true,
+                  placeholder: 'Enter address',
+                  isDisabled: disableForm,
+                  theme: (theme) => ({
+                    ...theme,
+                    colors: {
+                      ...theme.colors,
+                      primary25: ' #00acc125',
+                      primary50: ' #00acc150',
+                      primary75: ' #00acc175',
+                      primary: '#00acc1',
+                    },
+                  }),
+                  styles: {
+                    control: (provided, state) => {
+                      if (state.isFocused) {
+                        return {
+                          ...provided,
+                          backgroundColor: 'var(--form-element-background-color)',
+                          color: 'var(--form-element-color)',
+                          height:
+                            'calc(1rem * var(--line-height) + var(--form-element-spacing-vertical) * 2 + var(--border-width) * 2)',
+                          boxShadow: '0 0 0 var(--outline-width) var(--form-element-focus-color)',
+                          borderColor: 'var(--form-element-active-border-color)',
+                          ':hover': {
+                            borderColor: 'var(--form-element-active-border-color)',
+                          },
+                        }
+                      }
+                      return {
+                        ...provided,
+                        backgroundColor: 'var(--form-element-background-color)',
+                        color: 'var(--form-element-color)',
+                        height:
+                          'calc(1rem * var(--line-height) + var(--form-element-spacing-vertical) * 2 + var(--border-width) * 2)',
+                        borderColor: 'var(--form-element-border-color)',
+                        ':hover': {
+                          borderColor: 'var(--form-element-border-color)',
+                        },
+                      }
+                    },
+                    valueContainer: (provided, state) => ({
+                      ...provided,
+                      padding: '0 var(--form-element-spacing-horizontal)',
+                      cursor: state.isDisabled ? undefined : 'text',
+                      color: 'var(--form-element-color)',
+                    }),
+                    input: (provided) => ({
+                      ...provided,
+                      color: 'var(--form-element-color)',
+                      input: {
+                        boxShadow: 'none',
+                        height: 'max-content',
+                        color: 'var(--form-element-color)',
+                      },
+                    }),
+                    placeholder: (provided) => ({
+                      ...provided,
+                      color: 'var(--form-element-placeholder-color)',
+                      whiteSpace: 'nowrap',
+                    }),
+                    menu: (provided) => ({
+                      ...provided,
+                      borderRadius: 'var(--border-radius)',
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      borderRadius: 'calc(var(--border-radius) - 1px)',
+                      backgroundColor: 'var(--dropdown-background-color)',
+                      color: 'var(--dropdown-color)',
+                    }),
+                    option: (provided) => ({
+                      ...provided,
+                      ':hover': {
+                        cursor: 'pointer',
+                      },
+                    }),
+                    singleValue: (provided) => ({
+                      ...provided,
+                      color: 'var(--form-element-color)',
+                    }),
+                    indicatorSeparator: (provided) => ({
+                      ...provided,
+                      backgroundColor: 'var(--form-element-border-color)',
+                    }),
+                  },
+                }}
+              />
+            </div>
             <button type="submit" className={styles.addButton} disabled={disableForm}>
               Add
             </button>
@@ -92,7 +195,7 @@ function SequenceTrip() {
                         <span className={clsx(styles.startAddressIndicator)}>START ADDRESS:</span>
                       )}
                       <p className={clsx({ [styles.startAddress]: index === startAddressIndex })}>
-                        {index + 1}. {address}
+                        {index + 1}. {typeof address === 'object' ? address.label : address}
                       </p>
                       {index !== startAddressIndex && (
                         <button
@@ -130,4 +233,7 @@ function SequenceTrip() {
   )
 }
 
-export default SequenceTrip
+export default GoogleApiWrapper({
+  apiKey: publicRuntimeConfig.GOOGLE_MAPS_API_KEY,
+  libraries: ['places'],
+})(SequenceTrip)

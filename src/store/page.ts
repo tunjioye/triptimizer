@@ -1,10 +1,11 @@
+import { GooglePlacesAddress } from '@/schema/types'
 import { entity, persistence } from 'simpler-state'
 
 export type ColorSchemeType = 'light' | 'dark'
 
 export type PageStoreStateType = {
   colorScheme: ColorSchemeType
-  addresses: string[]
+  addresses: GooglePlacesAddress[]
   startAddressIndex: number
 }
 
@@ -26,7 +27,7 @@ export const setColorScheme = (colorScheme: ColorSchemeType = 'light') => {
   }))
 }
 
-export const setAddresses = (addresses: string[] = []) => {
+export const setAddresses = (addresses: GooglePlacesAddress[] = []) => {
   return page.set((value) => ({
     ...value,
     addresses,
