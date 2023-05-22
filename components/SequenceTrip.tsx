@@ -1,5 +1,5 @@
 import React from 'react'
-import styles from '../src/style/sequenceTrip.module.scss'
+import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
 import { page, setAddresses, setStartAddressIndex } from '@/store/page'

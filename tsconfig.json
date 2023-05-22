@@ -25,9 +25,6 @@
       ],
       "components": [
         "./components/*"
-      ],
-      "data": [
-        "./data/posts.ts"
       ]
     }
   },
