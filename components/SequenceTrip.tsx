@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
-import { page, setAddresses, setStartAddressIndex } from '@/store/page'
+import { page, setAddresses, setStartAddressIndex, runTrip } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import { GoogleApiWrapper } from 'google-maps-react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
@@ -214,7 +214,7 @@ function SequenceTrip() {
             {addresses.length === 1 && <p>Add at least 2 addresses to triptimize</p>}
           </div>
 
-          <button className={styles.sequenceTripButton} disabled={disableSequenceTripButton}>
+          <button className={styles.sequenceTripButton} disabled={disableSequenceTripButton} onClick={runTrip}>
             Triptimize
           </button>
         </div>

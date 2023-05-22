@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app'
 import Header from 'components/Header'
 import Footer from 'components/Footer'
 import { page, setColorScheme } from '@/store/page'
+import { Toaster } from "react-hot-toast";
 
 import '@picocss/pico'
 import '../style/style.css'
@@ -29,6 +30,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Header />
       <Component {...pageProps} />
       <Footer />
+      <Toaster position="top-right" containerStyle={{ fontSize: "0.875rem" }} />
     </>
   )
 }

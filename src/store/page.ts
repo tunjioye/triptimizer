@@ -1,4 +1,5 @@
-import { GooglePlacesAddress } from '@/schema/types'
+import { ApiError, GooglePlacesAddress } from '@/schema/types'
+import { handleApiError } from '@/utils'
 import { entity, persistence } from 'simpler-state'
 
 export type ColorSchemeType = 'light' | 'dark'
@@ -45,4 +46,32 @@ export const setStartAddressIndex = (index: number = -1) => {
 export const toggleColorScheme = () => {
   const { colorScheme } = page.get()
   setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
+}
+
+export const runTrip = async () => {
+  const { addresses, startAddressIndex } = page.get()
+  try {
+    const res = await fetch('/api/trip', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        addresses,
+        startAddressIndex,
+      }),
+    }).then((res) => {
+      return new Promise(async (resolve, reject) => {
+        if (res.ok) {
+          resolve(res.json())
+          return
+        }
+        const error: ApiError = await res.json()
+        reject({ status: res.status, message: error.message || res.statusText })
+      })
+    })
+    console.log('res', res)
+  } catch (error) {
+    handleApiError(error as ApiError)
+  }
 }

@@ -8,3 +8,7 @@ export type PublicRuntimeConfig = {
 export type GooglePlacesAutocompleteSelectProps = Pick<GooglePlacesAutocompleteProps, 'selectProps'>
 
 export type GooglePlacesAddress = Option
+
+export type ApiError = {
+  message: string
+}
