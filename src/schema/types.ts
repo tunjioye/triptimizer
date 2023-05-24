@@ -1,3 +1,4 @@
+import { Distance, Duration } from '@googlemaps/google-maps-services-js'
 import GooglePlacesAutocompleteProps, { Option } from 'react-google-places-autocomplete/build/types'
 
 export type PublicRuntimeConfig = {
@@ -11,4 +12,23 @@ export type GooglePlacesAddress = Option
 
 export type ApiError = {
   message: string
+}
+
+export type Route = {
+  address: string
+  distance: Duration
+  duration: Distance
+}
+
+export type OptimalRoute = Route[]
+
+export type OptimalTrip = {
+  startAddress: string
+  optimalRoute: OptimalRoute
+}
+
+export type TripApiResponse = {
+  payload: {
+    optimalTrips: OptimalTrip[]
+  }
 }

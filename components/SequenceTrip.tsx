@@ -8,6 +8,7 @@ import { GoogleApiWrapper } from 'google-maps-react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 import { publicRuntimeConfig } from '@/config'
 import { GooglePlacesAddress } from '@/schema/types'
+import SequenceTripResult from 'components/SequenceTripResult'
 
 const MAX_NUMBER_OF_ADDRESSES = 10
 
@@ -17,7 +18,7 @@ function SequenceTrip() {
   //   setAddress(e.target.value)
   // }
 
-  const { addresses = [], startAddressIndex } = page.use()
+  const { addresses = [], startAddressIndex, fetchingOptimalTrips } = page.use()
   const addAddress = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (addresses.length >= MAX_NUMBER_OF_ADDRESSES) {
@@ -129,10 +130,6 @@ function SequenceTrip() {
                     menu: (provided) => ({
                       ...provided,
                       borderRadius: 'var(--border-radius)',
-                    }),
-                    menuList: (provided) => ({
-                      ...provided,
-                      borderRadius: 'calc(var(--border-radius) - 1px)',
                       backgroundColor: 'var(--dropdown-background-color)',
                       color: 'var(--dropdown-color)',
                     }),
@@ -214,20 +211,18 @@ function SequenceTrip() {
             {addresses.length === 1 && <p>Add at least 2 addresses to triptimize</p>}
           </div>
 
-          <button className={styles.sequenceTripButton} disabled={disableSequenceTripButton} onClick={runTrip}>
+          <button
+            className={styles.sequenceTripButton}
+            disabled={disableSequenceTripButton}
+            aria-busy={fetchingOptimalTrips}
+            onClick={runTrip}
+          >
             Triptimize
           </button>
         </div>
 
         {/* sequence trip result */}
-        <div>
-          <h4 className={styles.heading}>Sequence Result</h4>
-          <div>
-            <p>
-              Click <b>Triptimize</b> button and see the result here.
-            </p>
-          </div>
-        </div>
+        <SequenceTripResult />
       </div>
     </NoSSR>
   )

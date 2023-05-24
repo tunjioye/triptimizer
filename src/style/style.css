@@ -30,3 +30,20 @@ header nav ul {
 header nav ul li.active a {
   background-color: var(--primary-focus);
 }
+
+details[role=list] summary::after {
+  position: absolute;
+  top: var(--form-element-spacing-vertical);
+  right: var(--form-element-spacing-horizontal);
+  /* display: block;
+  width: 1rem;
+  height: calc(1rem * var(--line-height,1.5));
+  -webkit-margin-start: 0.5rem;
+  margin-inline-start: 0.5rem;
+  float: right;
+  transform: rotate(0);
+  background-position: right center;
+  background-size: 1rem auto;
+  background-repeat: no-repeat;
+  content: ""; */
+}
