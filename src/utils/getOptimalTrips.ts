@@ -1,8 +1,9 @@
 import { OptimalRoute, OptimalTrip } from '@/schema/types'
-import { DistanceMatrixResponseData } from '@googlemaps/google-maps-services-js'
+import { DistanceMatrixResponseData, DistanceMatrixRowElement } from '@googlemaps/google-maps-services-js'
 
 export const getOptimalTrips = (
-  distanceMatrixResData: DistanceMatrixResponseData
+  distanceMatrixResData: DistanceMatrixResponseData,
+  optimizeBy: 'distance' | 'duration' = 'distance'
 ): OptimalTrip[] => {
   const {
     destination_addresses: destinationAddresses,
@@ -20,13 +21,20 @@ export const getOptimalTrips = (
       const nextIndex = routeIndices[routeIndices.length - 1]
       const addressElements = rows[nextIndex].elements
 
-      // filter addressElements without visited destination addresses
-      const filteredElements = addressElements.filter((_, index) => {
+      // filter addressElements to get unvisited destination addresses
+      const unvisitedElements = addressElements.filter((_, index) => {
         return !routeIndices.includes(index)
       })
-      const minDistance = Math.min(...filteredElements.map((a) => a.distance.value))
-      const minElement = addressElements.find((a) => a.distance.value === minDistance)
-      const minElementIndex = addressElements.findIndex((a) => a.distance.value === minDistance)
+      const minDistance = Math.min(...unvisitedElements.map((a) => a.distance.value))
+      const minDuration = Math.min(...unvisitedElements.map((a) => a.duration.value))
+      const findFn = (a: DistanceMatrixRowElement) => {
+        if (optimizeBy === 'distance') {
+          return a.distance.value === minDistance
+        }
+        return a.duration.value === minDuration
+      }
+      const minElement = addressElements.find(findFn)
+      const minElementIndex = addressElements.findIndex(findFn)
       if (!minElement) break
 
       routeIndices.push(minElementIndex)
