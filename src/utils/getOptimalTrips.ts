@@ -1,9 +1,9 @@
-import { OptimalRoute, OptimalTrip } from '@/schema/types'
+import { OptimalRoute, OptimalTrip, OptimizeTripByType } from '@/schema/types'
 import { DistanceMatrixResponseData, DistanceMatrixRowElement } from '@googlemaps/google-maps-services-js'
 
 export const getOptimalTrips = (
   distanceMatrixResData: DistanceMatrixResponseData,
-  optimizeBy: 'distance' | 'duration' = 'distance'
+  optimizeBy: OptimizeTripByType = 'distance'
 ): OptimalTrip[] => {
   const {
     destination_addresses: destinationAddresses,

@@ -107,63 +107,21 @@
       gap: 0.5rem;
       margin-bottom: 0.5rem;
       word-break: break-word;
-
-      label {
-        flex: 1;
-        margin: 0;
-        position: relative;
-
-        p {
-          margin: 0;
-        }
-      }
-
-      &:hover {
-        .startHereButton {
-          display: flex;
-        }
-      }
     }
-  }
-
-  .startAddressIndicator {
-    display: flex;
-    align-items: center;
-    width: fit-content;
-    height: fit-content;
-    margin: 0;
-    border: none;
-    margin-right: auto;
-    font-size: 0.75rem;
-    padding: 0;
-    white-space: nowrap;
-    position: absolute;
-    inset: 4px 0 0;
-    font-weight: bold;
-    background: var(--primary-focus);
-  }
-
-  .startAddress {
-    text-indent: 112px;
-
-    @media (min-width: 576px) {
-      text-indent: 120px;
-    }
-
-    @media (min-width: 768px) {
-      text-indent: 124px;
-    }
-
-    @media (min-width: 992px) {
-      text-indent: 136px;
-    }
-  }
-
-  .clickable {
-    cursor: pointer;
   }
 
   .sequenceTripButton {
     margin-top: 0;
+  }
+
+  .startAddressIndicator {
+    display: inline-flex;
+    align-items: center;
+    margin: 0;
+    padding: 1px 0.25rem;
+    margin-right: auto;
+    font-size: 0.75rem;
+    font-weight: bold;
+    background: var(--primary-focus);
   }
 }

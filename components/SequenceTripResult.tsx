@@ -1,36 +1,37 @@
 import React, { useEffect, useMemo } from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
-import { page } from '@/store/page'
+import { page, setOptimizeTripBy } from '@/store/page'
 import NoSSR from 'react-no-ssr'
+import { OptimizeTripByType } from '@/schema/types'
+import clsx from 'clsx'
 
 function SequenceTripResult() {
   const [selectedAddress, setSelectedAddress] = React.useState<string | null>(null)
-  const [startIndex, setStartIndex] = React.useState<number>(-1)
+  const [requestId, setRequestId] = React.useState<string | null>(null)
 
-  const { startAddressIndex, optimalTrips } = page.use()
+  const { optimizeTripBy, optimalTrip } = page.use()
+  // auto select 1st address when optimalTrip changes
   useEffect(() => {
-    // set startIndex when optimalTrips changes
-    // this is the startAddressIndex of the optimalTrips
-    setStartIndex(startAddressIndex)
+    if (optimalTrip == null) return
+    if (requestId === optimalTrip.requestId) return
+    const optimalTrips = optimalTrip.optimalTrip[optimizeTripBy]
+    const optimalTripAddresses = optimalTrips.map((trip) => trip.startAddress)
+    if (optimalTripAddresses.length > 0) {
+      setSelectedAddress(optimalTripAddresses[0])
+      setRequestId(optimalTrip.requestId)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [optimalTrips])
+  }, [optimalTrip])
+
+  const optimalTrips = useMemo(() => {
+    if (optimalTrip == null) return null
+    return optimalTrip.optimalTrip[optimizeTripBy]
+  }, [optimalTrip, optimizeTripBy])
 
   const optimalTripAddresses: string[] = useMemo(() => {
     if (optimalTrips == null) return []
     return optimalTrips.map((trip) => trip.startAddress)
   }, [optimalTrips])
-
-  // auto select address when optimalTripAddresses changes
-  useEffect(() => {
-    if (optimalTripAddresses.length > 0) {
-      if (startIndex >= 0) {
-        setSelectedAddress(optimalTripAddresses[startIndex])
-        return
-      }
-      // set selectedAddress to the first address if startIndex is not set
-      setSelectedAddress(optimalTripAddresses[0])
-    }
-  }, [optimalTripAddresses, startIndex])
 
   const selectedAddressOptimalTrip = useMemo(() => {
     if (optimalTrips == null) return null
@@ -110,6 +111,24 @@ function SequenceTripResult() {
               <div className={styles.addressesContainer}>
                 <div className={styles.addressesHeadingContainer}>
                   <h5 className={styles.addressesHeading}>Optimal Route</h5>
+                  <div>
+                    <select
+                      value={optimizeTripBy}
+                      onChange={(e) => {
+                        const value = e.target.value as OptimizeTripByType
+                        setOptimizeTripBy(value)
+                      }}
+                      style={{
+                        padding: '0.1rem 2.5rem 0.1rem 0.5rem',
+                        fontSize: '0.85rem',
+                        margin: 0,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <option value="distance">distance</option>
+                      <option value="duration">duration</option>
+                    </select>
+                  </div>
                 </div>
                 {selectedAddressOptimalTrip == null && (
                   <div>Could not find optimal route for selected address. Please try again.</div>
@@ -122,14 +141,14 @@ function SequenceTripResult() {
                     {selectedAddressOptimalTrip.optimalRoute.length > 0 && (
                       <ol className={styles.addresses}>
                         <li style={{ display: 'flex', flexDirection: 'column', gap: '0.125rem' }}>
-                          <span>
-                            <b>FROM</b>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <b>FROM</b>{' '}
+                            <span className={clsx(styles.startAddressIndicator)}>
+                              START ADDRESS
+                            </span>
                           </span>
                           <span>{selectedAddress}</span>
                           <br />
-                          <span>
-                            <b>TO</b>
-                          </span>
                         </li>
                         {selectedAddressOptimalTrip.optimalRoute.map((route, index) => {
                           const { address, distance, duration } = route
@@ -142,7 +161,12 @@ function SequenceTripResult() {
                                 gap: '0.125rem',
                               }}
                             >
-                              <span>&bull; {address},</span>
+                              {index === 0 && (
+                                <span>
+                                  <b>TO</b>
+                                </span>
+                              )}
+                              <span>&bull; {address}</span>
                               <span>
                                 <b>{distance.text}</b> ~ <b>{duration.text}</b>
                               </span>

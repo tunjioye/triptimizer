@@ -1,9 +1,10 @@
 import { NextApiRequest, NextApiResponse } from 'next'
-import { Client, DistanceMatrixRequest, LatLng } from '@googlemaps/google-maps-services-js'
+import { Client, DistanceMatrixRequest } from '@googlemaps/google-maps-services-js'
 import axios from 'axios'
 import { publicRuntimeConfig } from '@/config'
-import _ from 'lodash'
 import getOptimalTrips from '@/utils/getOptimalTrips'
+import { TripApiResponse } from '@/schema/types'
+import { nanoid } from 'nanoid'
 
 const googleMapsClient = new Client({
   // @ts-ignore
@@ -46,7 +47,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         timeout: 20000,
       })
       .then((r) => {
-        return { optimalTrips: getOptimalTrips(r.data) }
+        const payload: TripApiResponse['payload'] = {
+          requestId: nanoid(12),
+          optimalTrip: {
+            distance: getOptimalTrips(r.data, 'distance'),
+            duration: getOptimalTrips(r.data, 'duration'),
+          },
+        }
+        return payload
       })
       .catch((e) => {
         if (e.response?.data) {

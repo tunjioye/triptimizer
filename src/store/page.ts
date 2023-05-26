@@ -1,4 +1,10 @@
-import { ApiError, GooglePlacesAddress, OptimalTrip, TripApiResponse } from '@/schema/types'
+import {
+  ApiError,
+  GooglePlacesAddress,
+  OptimalTripMap,
+  OptimizeTripByType,
+  TripApiResponse,
+} from '@/schema/types'
 import { handleApiError } from '@/utils'
 import { entity, persistence } from 'simpler-state'
 
@@ -7,27 +13,26 @@ export type ColorSchemeType = 'light' | 'dark'
 export type PageStoreStateType = {
   colorScheme: ColorSchemeType
   addresses: GooglePlacesAddress[]
-  startAddressIndex: number
-  fetchingOptimalTrips: boolean
-  optimalTrips: OptimalTrip[] | null
+  fetchingOptimalTrip: boolean
+  optimizeTripBy: OptimizeTripByType
+  optimalTrip: TripApiResponse['payload'] | null
 }
 
 // initial state
 const initialState: PageStoreStateType = {
   colorScheme: 'light',
   addresses: [],
-  startAddressIndex: -1,
-  fetchingOptimalTrips: false,
-  optimalTrips: null,
+  fetchingOptimalTrip: false,
+  optimizeTripBy: 'distance',
+  optimalTrip: null,
 }
 
 // entity
 export const page = entity(initialState, [
   persistence('tm_page', {
     serializeFn: (val) => {
-      // remove fetchingOptimalTrips & optimalTrips from persisted state
-      const { fetchingOptimalTrips, optimalTrips, ...rest } = val
-      return JSON.stringify({ ...rest })
+      const { colorScheme, addresses } = val
+      return JSON.stringify({ colorScheme, addresses })
     },
   }),
 ])
@@ -47,24 +52,24 @@ export const setAddresses = (addresses: GooglePlacesAddress[] = []) => {
   }))
 }
 
-export const setStartAddressIndex = (index: number = -1) => {
+export const setFetchingOptimalTrip = (fetchingOptimalTrip: boolean = false) => {
   return page.set((value) => ({
     ...value,
-    startAddressIndex: index,
+    fetchingOptimalTrip,
   }))
 }
 
-export const setFetchingOptimalTrips = (fetchingOptimalTrips: boolean = false) => {
+export const setOptimizeTripBy = (optimizeTripBy: OptimizeTripByType = 'distance') => {
   return page.set((value) => ({
     ...value,
-    fetchingOptimalTrips,
+    optimizeTripBy,
   }))
 }
 
-export const setOptimalTrips = (optimalTrips: OptimalTrip[] | null = null) => {
+export const setOptimalTrip = (optimalTrip: TripApiResponse['payload'] | null = null) => {
   return page.set((value) => ({
     ...value,
-    optimalTrips,
+    optimalTrip,
   }))
 }
 
@@ -77,7 +82,7 @@ export const toggleColorScheme = () => {
 export const runTrip = async () => {
   const { addresses } = page.get()
   try {
-    setFetchingOptimalTrips(true)
+    setFetchingOptimalTrip(true)
     const res: TripApiResponse = await fetch('/api/trip', {
       method: 'POST',
       headers: {
@@ -96,12 +101,13 @@ export const runTrip = async () => {
         reject({ status: res.status, message: error.message || res.statusText })
       })
     })
-    if (res.payload && res.payload.optimalTrips) {
-      setOptimalTrips(res.payload.optimalTrips)
+    if (res.payload && res.payload.requestId) {
+      setOptimizeTripBy('distance')
+      setOptimalTrip(res.payload)
     }
   } catch (error) {
     handleApiError(error as ApiError)
   } finally {
-    setFetchingOptimalTrips(false)
+    setFetchingOptimalTrip(false)
   }
 }

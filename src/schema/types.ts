@@ -27,8 +27,15 @@ export type OptimalTrip = {
   optimalRoute: OptimalRoute
 }
 
+export type OptimalTripMap = {
+  [key in OptimizeTripByType]: OptimalTrip[]
+}
+
+export type OptimizeTripByType = 'distance' | 'duration'
+
 export type TripApiResponse = {
   payload: {
-    optimalTrips: OptimalTrip[]
+    requestId: string
+    optimalTrip: OptimalTripMap
   }
 }

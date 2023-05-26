@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
 import { FaMinusCircle, FaTrash } from 'react-icons/fa'
-import { page, setAddresses, setStartAddressIndex, runTrip } from '@/store/page'
+import { page, setAddresses, runTrip } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import { GoogleApiWrapper } from 'google-maps-react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
@@ -14,31 +14,22 @@ const MAX_NUMBER_OF_ADDRESSES = 10
 
 function SequenceTrip() {
   const [address, setAddress] = React.useState<GooglePlacesAddress | null>(null)
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   setAddress(e.target.value)
-  // }
 
-  const { addresses = [], startAddressIndex, fetchingOptimalTrips } = page.use()
+  const { addresses = [], fetchingOptimalTrip } = page.use()
   const addAddress = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     if (addresses.length >= MAX_NUMBER_OF_ADDRESSES) {
       window.alert('You can add a maximum of 10 addresses.')
       return
     }
-    if (address === null) {
-      return
-    }
+    if (address === null) return
     setAddresses([...addresses, address])
     setAddress(null)
   }
   const removeAddress = (index: number) => () => {
     setAddresses(addresses.filter((_, i) => i !== index))
-    if (index === startAddressIndex) setStartAddressIndex()
   }
-  const clearAddresses = () => {
-    setAddresses([])
-    setStartAddressIndex()
-  }
+  const clearAddresses = () => setAddresses([])
 
   const disableForm = addresses.length >= MAX_NUMBER_OF_ADDRESSES
   const disableSequenceTripButton = addresses.length < 2
@@ -187,23 +178,9 @@ function SequenceTrip() {
                     >
                       <FaMinusCircle />
                     </button>
-                    <label className={clsx({ [styles.clickable]: index !== startAddressIndex })}>
-                      {index === startAddressIndex && (
-                        <span className={clsx(styles.startAddressIndicator)}>START ADDRESS:</span>
-                      )}
-                      <p className={clsx({ [styles.startAddress]: index === startAddressIndex })}>
-                        {index + 1}. {typeof address === 'object' ? address.label : address}
-                      </p>
-                      {index !== startAddressIndex && (
-                        <button
-                          type="button"
-                          className={clsx(styles.startHereButton, 'secondary')}
-                          onClick={() => setStartAddressIndex(index)}
-                        >
-                          Start here
-                        </button>
-                      )}
-                    </label>
+                    <span>
+                      {index + 1}. {typeof address === 'object' ? address.label : address}
+                    </span>
                   </li>
                 ))}
               </ol>
@@ -214,7 +191,7 @@ function SequenceTrip() {
           <button
             className={styles.sequenceTripButton}
             disabled={disableSequenceTripButton}
-            aria-busy={fetchingOptimalTrips}
+            aria-busy={fetchingOptimalTrip}
             onClick={runTrip}
           >
             Triptimize
