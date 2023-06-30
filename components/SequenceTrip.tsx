@@ -53,7 +53,12 @@ function SequenceTrip() {
             <div style={{ width: 'calc(100% - 100px - 0.5rem)' }}>
               <GooglePlacesAutocomplete
                 apiKey={publicRuntimeConfig.GOOGLE_MAPS_API_KEY}
-                // apiOptions={{ language: 'en', region: 'ca' }}
+                apiOptions={{ language: 'en', region: 'ca' }}
+                autocompletionRequest={{
+                  componentRestrictions: {
+                    country: ['ca'],
+                  },
+                }}
                 selectProps={{
                   value: address,
                   onChange: setAddress,
