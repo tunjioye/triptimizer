@@ -11,6 +11,9 @@
   border: none;
   width: 20px;
 }
+.text-muted {
+  color: var(--muted-color);
+}
 
 body > div:first-child {
   display: flex;
@@ -21,7 +24,6 @@ main {
   flex: 1;
 }
 
-
 header nav ul {
   display: flex;
   flex-direction: row;
@@ -31,6 +33,10 @@ header nav ul li.active a {
   background-color: var(--primary-focus);
 }
 
+details.disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
 details[role=list] summary::after {
   position: absolute;
   top: var(--form-element-spacing-vertical);

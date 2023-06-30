@@ -4,10 +4,17 @@ import { page, setOptimizeTripBy } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import { OptimizeTripByType } from '@/schema/types'
 import clsx from 'clsx'
+import BigNumber from 'bignumber.js'
 
-function SequenceTripResult() {
+type Props = {
+  readonly showHeading?: boolean
+}
+
+function SequenceTripResult(props: Props) {
+  const { showHeading = true } = props
   const [selectedAddress, setSelectedAddress] = React.useState<string | null>(null)
   const [requestId, setRequestId] = React.useState<string | null>(null)
+  const [openAddressListbox, setOpenAddressListbox] = React.useState(false)
 
   const { optimizeTripBy, optimalTrip } = page.use()
   // auto select 1st address when optimalTrip changes
@@ -38,10 +45,27 @@ function SequenceTripResult() {
     return optimalTrips.find((trip) => trip.startAddress === selectedAddress)
   }, [optimalTrips, selectedAddress])
 
+  const [totalDistance, totalDuration] = useMemo(() => {
+    if (selectedAddressOptimalTrip == null) {
+      return [null, null]
+    }
+
+    const [totalDistanceBN, totalDurationBN] = selectedAddressOptimalTrip.optimalRoute.reduce(
+      (acc, route) => {
+        return [acc[0].plus(route.distance.value), acc[1].plus(route.duration.value)]
+      },
+      [new BigNumber(0), new BigNumber(0)]
+    )
+    return [
+      totalDistanceBN.div(1000).decimalPlaces(1).toNumber(),
+      Math.ceil(totalDurationBN.div(60).decimalPlaces(1).toNumber()),
+    ]
+  }, [selectedAddressOptimalTrip])
+
   return (
     <NoSSR>
-      <section>
-        <h4 className={styles.heading}>Sequence Result</h4>
+      <div>
+        {showHeading && <h4 className={styles.heading}>Sequence Result</h4>}
         <div>
           {optimalTrips == null && (
             <p>
@@ -54,7 +78,15 @@ function SequenceTripResult() {
           {optimalTrips != null && optimalTrips.length > 0 && (
             <div>
               {/* select dropdown for addresses */}
-              <details role="list">
+              <h5 className={styles.heading}>Change Start Address</h5>
+              <details
+                role="list"
+                open={openAddressListbox}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setOpenAddressListbox(!openAddressListbox)
+                }}
+              >
                 <summary
                   aria-haspopup="listbox"
                   style={{
@@ -77,6 +109,8 @@ function SequenceTripResult() {
                           cursor: 'pointer',
                         }}
                         onClick={(e) => {
+                          e.preventDefault()
+                          setSelectedAddress(address)
                           // toggle open attribute of parent details tag
                           const details = e.currentTarget.closest('details')
                           if (details == null) return
@@ -111,7 +145,7 @@ function SequenceTripResult() {
               <div className={styles.addressesContainer}>
                 <div className={styles.addressesHeadingContainer}>
                   <h5 className={styles.addressesHeading}>Optimal Route</h5>
-                  <div>
+                  <div data-tooltip="Optimize By" style={{ border: 0 }}>
                     <select
                       value={optimizeTripBy}
                       onChange={(e) => {
@@ -148,31 +182,57 @@ function SequenceTripResult() {
                             </span>
                           </span>
                           <span>{selectedAddress}</span>
-                          <br />
                         </li>
-                        {selectedAddressOptimalTrip.optimalRoute.map((route, index) => {
-                          const { address, distance, duration } = route
-                          return (
-                            <li
-                              key={index}
-                              style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '0.125rem',
-                              }}
-                            >
-                              {index === 0 && (
-                                <span>
-                                  <b>TO</b>
+                        <ol className={styles.toAddresses}>
+                          <li
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              gap: '0.125rem',
+                              margin: '0 0 0 -1.75rem',
+                            }}
+                          >
+                            <span>
+                              <b>TO</b>
+                            </span>
+                          </li>
+                          {selectedAddressOptimalTrip.optimalRoute.map((route, index) => {
+                            const { address, distance, duration } = route
+                            return (
+                              <li
+                                key={index}
+                                style={{
+                                  display: 'list-item',
+                                  listStyleType: 'decimal-leading-zero',
+                                  margin: 0,
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    flex: 1,
+                                    display: 'flex',
+                                    justifyContent: 'space-between',
+                                    flexWrap: 'wrap',
+                                    gap: '0.25rem',
+                                  }}
+                                >
+                                  <span>{address}</span>
+                                  <span>
+                                    <b>{distance.text}</b> ~ <b>{duration.text}</b>
+                                  </span>
                                 </span>
-                              )}
-                              <span>&bull; {address}</span>
-                              <span>
-                                <b>{distance.text}</b> ~ <b>{duration.text}</b>
-                              </span>
-                            </li>
-                          )
-                        })}
+                              </li>
+                            )
+                          })}
+                        </ol>
+                        <li style={{ display: 'flex', flexDirection: 'column', gap: '0.125rem' }}>
+                          <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                            <b>TOTAL DISTANCE & DURATION</b>
+                          </span>
+                          <span>
+                            <b>{totalDistance} km</b> ~ <b>{totalDuration} mins</b>
+                          </span>
+                        </li>
                       </ol>
                     )}
                   </div>
@@ -181,7 +241,7 @@ function SequenceTripResult() {
             </div>
           )}
         </div>
-      </section>
+      </div>
     </NoSSR>
   )
 }

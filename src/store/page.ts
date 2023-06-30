@@ -1,7 +1,7 @@
 import {
   ApiError,
   GooglePlacesAddress,
-  OptimalTripMap,
+  // OptimalTripMap,
   OptimizeTripByType,
   TripApiResponse,
 } from '@/schema/types'
@@ -77,6 +77,12 @@ export const setOptimalTrip = (optimalTrip: TripApiResponse['payload'] | null = 
 export const toggleColorScheme = () => {
   const { colorScheme } = page.get()
   setColorScheme(colorScheme === 'dark' ? 'light' : 'dark')
+}
+
+export const resetSequenceTripForm = () => {
+  setAddresses()
+  setOptimalTrip()
+  setOptimizeTripBy()
 }
 
 export const runTrip = async () => {
