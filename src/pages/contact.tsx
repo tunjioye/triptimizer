@@ -3,14 +3,13 @@ import React from 'react'
 function contact() {
   return (
     <main className="container">
-      <h2> Contact us</h2>
+      <h2>Contact us</h2>
       <p>
-        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Veritatis perferendis officia
-        tempora cumque doloribus voluptatem sit voluptatibus sequi perspiciatis doloremque.
+        Email:{' '}
+        <a href="mailto:" target="_blank" rel="noopener noreferrer">
+          N/A
+        </a>
       </p>
-      <p>Veritatis blanditiis alias corporis ipsum placeat fugiat ab dolores vitae.</p>
-
-      <p>Thanks for reading. </p>
     </main>
   )
 }

@@ -3,28 +3,43 @@ import React from 'react'
 function about() {
   return (
     <main className="container" role="document">
-      <hgroup className="readPost">
+      <hgroup>
         <h2>About Triptimizer</h2>
-        <h3> some description </h3>
+        <h3>
+          Triptimizer is an innovative web application designed to streamline the process of
+          planning and optimizing your trips. With Triptimizer, you can effortlessly generate the
+          most efficient routes for your journeys, taking into account either the shortest distance
+          or the shortest time to reach multiple destinations.
+        </h3>
       </hgroup>
 
-      <h6>Hi welcome, </h6>
+      <p>
+        Gone are the days of manually plotting routes or relying on guesswork to plan your trips.
+        Triptimizer harnesses advanced algorithms and cutting-edge mapping technologies to provide
+        you with optimal routes that save you time, money, and energy.
+      </p>
+
+      <h6>Usage</h6>
 
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus accusantium esse voluptas
-        quasi voluptates debitis at ut eligendi magni perspiciatis, eius molestiae consectetur
-        assumenda dolorem architecto vero hic? Ad, incidunt. Lorem ipsum dolor sit amet, consectetur
-        adipisicing elit. Quas dolor obcaecati dolore impedit quo reiciendis odit quasi sapiente
-        eius, porro incidunt error sunt pariatur voluptate veritatis. Velit voluptatem perferendis
-        voluptas. Lorem ipsum dolor sit amet consectetur, adipisicing elit. Ut iusto corrupti
-        ducimus, recusandae placeat corporis deserunt ab cum, veniam cumque odio unde maxime ipsam
-        neque nemo. Dolor, nemo! Repudiandae, repellat?
+        Whether you are planning a road trip, a delivery route, or a series of errands, Triptimizer
+        can handle it all. Simply input your list of addresses, specify your preferences for
+        shortest distance or shortest time, and let Triptimizer do the rest. Within seconds, you
+        will receive a well-organized itinerary that guides you from your starting point to each
+        subsequent destination with maximum efficiency.
       </p>
 
       <p>
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Delectus sed soluta enim est
-        quaerat quas, officiis sequi quibusdam nihil asperiores aliquid ipsa saepe sapiente
-        voluptate accusamus tenetur sit labore velit!
+        At Triptimizer, we understand that time is precious, and inefficient travel routes can
+        quickly become a major frustration. That is why we have developed a powerful solution that
+        takes the hassle out of planning and ensures that you always reach your destinations in the
+        most efficient way possible.
+      </p>
+
+      <p>
+        Experience the convenience and power of Triptimizer today. <br />
+        Start planning your next trip with us and unlock the true potential of efficient travel
+        routing.
       </p>
 
       <p>Thanks for reading</p>

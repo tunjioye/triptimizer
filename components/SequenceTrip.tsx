@@ -27,6 +27,8 @@ function SequenceTrip() {
     }
     setStep(newStep)
   }
+
+  // save trip result to KV
   useEffect(() => {
     if (optimalTrip != null) {
       setStep(2)
@@ -39,6 +41,8 @@ function SequenceTrip() {
       }
     }
   }, [optimalTrip, isViewingResult])
+
+  // load saved trip result from KV
   useEffect(() => {
     if (!router.isReady) return
     if (requestId && typeof requestId === 'string') {
@@ -59,6 +63,16 @@ function SequenceTrip() {
         .catch((error) => toast.error(error.message))
     }
   }, [router.isReady, requestId, optimizeTripBy])
+
+  // reset form when navigating away from result view
+  useEffect(() => {
+    if (!router.isReady) return
+    if (isViewingResult) {
+      return
+    }
+    resetSequenceTripForm()
+    setStep(1)
+  }, [router.isReady, router.pathname, isViewingResult])
 
   return (
     <NoSSR>
