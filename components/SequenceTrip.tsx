@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
-import { page, resetSequenceTripForm } from '@/store/page'
+import { page, resetSequenceTripForm, setAddresses, setOptimalTrip } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import SequenceTripForm from 'components/SequenceTripForm'
 import SequenceTripResult from 'components/SequenceTripResult'
+import { kv } from '@vercel/kv'
+import { useRouter } from 'next/router'
+import { TripApiResponse } from '@/schema/types'
+import { toast } from 'react-hot-toast'
 
 export const MAX_NUMBER_OF_ADDRESSES = 10
 
 function SequenceTrip() {
-  const { optimalTrip } = page.use()
+  const router = useRouter()
+  const { request: requestId } = router.query
+  const { optimalTrip, optimizeTripBy = 'distance' } = page.use()
+  const isViewingResult = requestId && typeof requestId === 'string'
 
   const [step, setStep] = useState<number>(1)
   const changeToStep = (newStep: number) => {
@@ -20,8 +27,38 @@ function SequenceTrip() {
     setStep(newStep)
   }
   useEffect(() => {
-    if (optimalTrip != null) setStep(2)
-  }, [optimalTrip])
+    if (optimalTrip != null) {
+      setStep(2)
+      if (isViewingResult) {
+        return
+      }
+      if (optimalTrip.requestId && optimalTrip.optimalTrip) {
+        kv.hset(optimalTrip.requestId, optimalTrip)
+          .then(() => kv.ttl(optimalTrip.requestId))
+          .catch(() => null)
+      }
+    }
+  }, [optimalTrip, isViewingResult])
+  useEffect(() => {
+    if (!router.isReady) return
+    if (requestId && typeof requestId === 'string') {
+      kv.hgetall(requestId)
+        .then((responseData) => {
+          const data = responseData as TripApiResponse['payload']
+          if (data && data.requestId === requestId) {
+            // set result
+            setOptimalTrip(data)
+            const optimalTrips = data.optimalTrip[optimizeTripBy]
+            const optimalTripAddresses = optimalTrips.map((trip) => trip.startAddress)
+            // set addresses
+            setAddresses(optimalTripAddresses)
+          }
+        })
+        .catch(() => {
+          toast.error('Result is no longer available. We store results for 2 days.')
+        })
+    }
+  }, [router.isReady, requestId, optimizeTripBy])
 
   return (
     <NoSSR>
@@ -56,12 +93,19 @@ function SequenceTrip() {
           <div className="hide-on-print">
             <button
               onClick={async () => {
-                const confirmMessage =
-                  'Are you sure you want to start a new trip? Starting a new trip will reset your current trip.'
+                let confirmMessage = 'Are you sure you want to start a new trip? '
+                if (!isViewingResult) {
+                  confirmMessage += 'Starting a new trip will reset your current trip.'
+                }
+
                 const confirmed = await window.confirm(confirmMessage)
                 if (confirmed) {
                   resetSequenceTripForm()
                   setStep(1)
+                  if (isViewingResult) {
+                    router.push('/')
+                    return
+                  }
                 }
               }}
               style={{

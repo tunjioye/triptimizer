@@ -34,7 +34,7 @@ function SequenceTripResult(props: Props) {
   const [requestId, setRequestId] = React.useState<string | null>(null)
   const [openAddressListbox, setOpenAddressListbox] = React.useState(false)
 
-  const { optimizeTripBy, optimalTrip } = page.use()
+  const { optimalTrip, optimizeTripBy = 'distance' } = page.use()
   // auto select 1st address when optimalTrip changes
   useEffect(() => {
     if (optimalTrip == null) return
@@ -316,41 +316,41 @@ function SequenceTripResult(props: Props) {
                             <MdPrint size={20} style={{ marginTop: '-0.125rem' }} />
                           </button>
                           <LinkedinShareButton
-                            url={`${publicRuntimeConfig.APP_URL}`}
+                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                             title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
                             summary={`Optimal route FROM \n${selectedAddress}`}
-                            source={`${publicRuntimeConfig.APP_URL}`}
+                            source={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                           >
                             <LinkedinIcon size={32} round />
                           </LinkedinShareButton>
                           <TwitterShareButton
-                            url={`${publicRuntimeConfig.APP_URL}`}
+                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                             title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
                             hashtags={['triptimizer', 'optimalroute']}
                           >
                             <TwitterIcon size={32} round />
                           </TwitterShareButton>
                           <WhatsappShareButton
-                            url={`${publicRuntimeConfig.APP_URL}`}
+                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                             title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
                           >
                             <WhatsappIcon size={32} round />
                           </WhatsappShareButton>
                           <FacebookShareButton
-                            url={`${publicRuntimeConfig.APP_URL}`}
+                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                             quote={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
                             hashtag="#triptimizer"
                           >
                             <FacebookIcon size={32} round />
                           </FacebookShareButton>
                           <TelegramShareButton
-                            url={`${publicRuntimeConfig.APP_URL}`}
+                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                             title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
                           >
                             <TelegramIcon size={32} round />
                           </TelegramShareButton>
                           <EmailShareButton
-                            url={`${publicRuntimeConfig.APP_URL}`}
+                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
                             subject={`Optimal route FROM ${selectedAddress}`}
                             body={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
                           >

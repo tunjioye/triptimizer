@@ -19,8 +19,7 @@ function SequenceTripForm(props: Props) {
   const [address, setAddress] = React.useState<GooglePlacesAddress | null>(null)
 
   const { addresses = [], fetchingOptimalTrip } = page.use()
-  const addAddress = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
+  const addAddress = () => {
     if (addresses.length >= MAX_NUMBER_OF_ADDRESSES) {
       window.alert('You can add a maximum of 10 addresses.')
       return
@@ -42,15 +41,7 @@ function SequenceTripForm(props: Props) {
       <div>
         {showHeading && <h4 className={styles.heading}>Sequence Trip</h4>}
         {/* address form */}
-        <form onSubmit={addAddress} className={styles.sequenceTripForm}>
-          {/* <input
-              type="text"
-              placeholder="Enter address"
-              required
-              value={address}
-              onChange={handleInputChange}
-              disabled={disableForm}
-            /> */}
+        <form onSubmit={(e) => e.preventDefault()} className={styles.sequenceTripForm}>
           <div style={{ width: 'calc(100% - 100px - 0.5rem)' }}>
             <GooglePlacesAutocomplete
               apiKey={publicRuntimeConfig.GOOGLE_MAPS_API_KEY}
@@ -151,7 +142,7 @@ function SequenceTripForm(props: Props) {
                   }
                   switch (e.key) {
                     case 'Enter':
-                      addAddress(e)
+                      addAddress()
                       break
                     default:
                       break
@@ -160,7 +151,12 @@ function SequenceTripForm(props: Props) {
               }}
             />
           </div>
-          <button type="submit" className={styles.addButton} disabled={disableForm}>
+          <button
+            type="button"
+            onClick={addAddress}
+            className={styles.addButton}
+            disabled={disableForm}
+          >
             Add
           </button>
         </form>

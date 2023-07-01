@@ -12,7 +12,7 @@ export type ColorSchemeType = 'light' | 'dark'
 
 export type PageStoreStateType = {
   colorScheme: ColorSchemeType
-  addresses: GooglePlacesAddress[]
+  addresses: Array<GooglePlacesAddress| string>
   fetchingOptimalTrip: boolean
   optimizeTripBy: OptimizeTripByType
   optimalTrip: TripApiResponse['payload'] | null
@@ -45,7 +45,7 @@ export const setColorScheme = (colorScheme: ColorSchemeType = 'light') => {
   }))
 }
 
-export const setAddresses = (addresses: GooglePlacesAddress[] = []) => {
+export const setAddresses = (addresses: Array<GooglePlacesAddress| string> = []) => {
   return page.set((value) => ({
     ...value,
     addresses,
