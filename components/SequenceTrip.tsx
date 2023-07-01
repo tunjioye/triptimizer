@@ -14,7 +14,7 @@ export const MAX_NUMBER_OF_ADDRESSES = 10
 
 function SequenceTrip() {
   const router = useRouter()
-  const { request: requestId } = router.query
+  const { trip: requestId } = router.query
   const { optimalTrip, optimizeTripBy = 'distance' } = page.use()
   const isViewingResult = requestId && typeof requestId === 'string'
   const showStartNewTripButton = isViewingResult || optimalTrip != null

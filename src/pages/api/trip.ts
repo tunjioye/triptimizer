@@ -24,7 +24,12 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       return
     }
 
-    const mappedAddresses = addresses.map((a: any) => a.label)
+    const mappedAddresses = addresses.map((a: any) => {
+      if (a && typeof a === 'string') {
+        return a
+      }
+      return a.label
+    })
     const requestParams: DistanceMatrixRequest = {
       // language: 'en',
       // region: 'ca',

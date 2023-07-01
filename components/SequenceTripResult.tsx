@@ -89,9 +89,11 @@ function SequenceTripResult(props: Props) {
       .join(',\n')
   }, [selectedAddressOptimalTrip])
 
+  const shareUrl = `${publicRuntimeConfig.APP_URL}?trip=${requestId}`
+  const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.`
   const copyResult = async () => {
     try {
-      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.`
+      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n${shareUrl}`
       await navigator.clipboard.writeText(text)
       toast.success('Copied to clipboard')
     } catch (error) {
@@ -316,43 +318,37 @@ function SequenceTripResult(props: Props) {
                             <MdPrint size={20} style={{ marginTop: '-0.125rem' }} />
                           </button>
                           <LinkedinShareButton
-                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
-                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
-                            summary={`Optimal route FROM \n${selectedAddress}`}
-                            source={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
+                            url={shareUrl}
+                            title={shareTitle}
+                            summary={`Optimal route FROM ${selectedAddress}`}
+                            source={publicRuntimeConfig.APP_URL}
                           >
                             <LinkedinIcon size={32} round />
                           </LinkedinShareButton>
                           <TwitterShareButton
-                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
-                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                            url={shareUrl}
+                            title={shareTitle}
                             hashtags={['triptimizer', 'optimalroute']}
                           >
                             <TwitterIcon size={32} round />
                           </TwitterShareButton>
-                          <WhatsappShareButton
-                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
-                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
-                          >
+                          <WhatsappShareButton url={shareUrl} title={shareTitle}>
                             <WhatsappIcon size={32} round />
                           </WhatsappShareButton>
                           <FacebookShareButton
-                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
-                            quote={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                            url={shareUrl}
+                            quote={shareTitle}
                             hashtag="#triptimizer"
                           >
                             <FacebookIcon size={32} round />
                           </FacebookShareButton>
-                          <TelegramShareButton
-                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
-                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
-                          >
+                          <TelegramShareButton url={shareUrl} title={shareTitle}>
                             <TelegramIcon size={32} round />
                           </TelegramShareButton>
                           <EmailShareButton
-                            url={`${publicRuntimeConfig.APP_URL}?request=${requestId}`}
+                            url={shareUrl}
                             subject={`Optimal route FROM ${selectedAddress}`}
-                            body={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                            body={shareTitle}
                           >
                             <EmailIcon size={32} round />
                           </EmailShareButton>
