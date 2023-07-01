@@ -24,6 +24,8 @@ import { FaCopy, FaMap } from 'react-icons/fa'
 import { MdCopyAll, MdMap, MdPrint } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
 
+const SHARE_BUTTOn_SIZE = 48
+
 type Props = {
   readonly showHeading?: boolean
 }
@@ -90,12 +92,20 @@ function SequenceTripResult(props: Props) {
   }, [selectedAddressOptimalTrip])
 
   const shareUrl = `${publicRuntimeConfig.APP_URL}?trip=${requestId}`
-  const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.`
+  const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\r\n`
   const copyResult = async () => {
     try {
-      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n${shareUrl}`
+      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\r\n${shareUrl}`
       await navigator.clipboard.writeText(text)
-      toast.success('Copied to clipboard')
+      toast.success('Copied result to clipboard')
+    } catch (error) {
+      toast.error('Failed to copy')
+    }
+  }
+  const copyShareUrl = async () => {
+    try {
+      await navigator.clipboard.writeText(shareUrl)
+      toast.success('Copied link to clipboard')
     } catch (error) {
       toast.error('Failed to copy')
     }
@@ -314,83 +324,104 @@ function SequenceTripResult(props: Props) {
                       <div className="hide-on-print">
                         <h5 className={styles.heading}>Share Result</h5>
                         <div className={styles.shareResultContainer}>
-                          <button
-                            type="button"
-                            style={{
-                              minWidth: 32,
-                              maxWidth: 32,
-                              minHeight: 32,
-                              maxHeight: 32,
-                              borderRadius: 32,
-                              padding: 0,
-                            }}
-                            onClick={openInGoogleMap}
-                          >
-                            <MdMap size={20} style={{ marginTop: '-0.1875rem' }} />
-                          </button>
-                          <button
-                            type="button"
-                            className="secondary"
-                            style={{
-                              minWidth: 32,
-                              maxWidth: 32,
-                              minHeight: 32,
-                              maxHeight: 32,
-                              borderRadius: 32,
-                              padding: 0,
-                            }}
-                            onClick={copyResult}
-                          >
-                            <MdCopyAll size={20} style={{ marginTop: '-0.1875rem' }} />
-                          </button>
                           <LinkedinShareButton
                             url={shareUrl}
                             title={shareTitle}
                             summary={`Optimal route FROM ${selectedAddress}`}
                             source={publicRuntimeConfig.APP_URL}
+                            data-tooltip="LinkedIn"
                           >
-                            <LinkedinIcon size={32} round />
+                            <LinkedinIcon size={SHARE_BUTTOn_SIZE} round />
                           </LinkedinShareButton>
                           <TwitterShareButton
                             url={shareUrl}
                             title={shareTitle}
-                            hashtags={['triptimizer', 'optimalroute']}
+                            hashtags={['triptimizer', 'optimalroute', 'optimaltrip']}
+                            data-tooltip="Twitter"
                           >
-                            <TwitterIcon size={32} round />
+                            <TwitterIcon size={SHARE_BUTTOn_SIZE} round />
                           </TwitterShareButton>
-                          <WhatsappShareButton url={shareUrl} title={shareTitle}>
-                            <WhatsappIcon size={32} round />
+                          <WhatsappShareButton
+                            url={shareUrl}
+                            title={shareTitle}
+                            data-tooltip="WhatsApp"
+                          >
+                            <WhatsappIcon size={SHARE_BUTTOn_SIZE} round />
                           </WhatsappShareButton>
                           <FacebookShareButton
                             url={shareUrl}
                             quote={shareTitle}
                             hashtag="#triptimizer"
+                            data-tooltip="Facebook"
                           >
-                            <FacebookIcon size={32} round />
+                            <FacebookIcon size={SHARE_BUTTOn_SIZE} round />
                           </FacebookShareButton>
-                          <TelegramShareButton url={shareUrl} title={shareTitle}>
-                            <TelegramIcon size={32} round />
+                          <TelegramShareButton
+                            url={shareUrl}
+                            title={shareTitle}
+                            data-tooltip="Telegram"
+                          >
+                            <TelegramIcon size={SHARE_BUTTOn_SIZE} round />
                           </TelegramShareButton>
                           <EmailShareButton
                             url={shareUrl}
                             subject={`Optimal route FROM ${selectedAddress}`}
                             body={shareTitle}
+                            data-tooltip="Email"
                           >
-                            <EmailIcon size={32} round />
+                            <EmailIcon size={SHARE_BUTTOn_SIZE} round />
                           </EmailShareButton>
                           <button
                             type="button"
                             style={{
-                              minWidth: 32,
-                              maxWidth: 32,
-                              minHeight: 32,
-                              maxHeight: 32,
-                              borderRadius: 32,
+                              minWidth: SHARE_BUTTOn_SIZE,
+                              maxWidth: SHARE_BUTTOn_SIZE,
+                              minHeight: SHARE_BUTTOn_SIZE,
+                              maxHeight: SHARE_BUTTOn_SIZE,
+                              borderRadius: SHARE_BUTTOn_SIZE,
                               padding: 0,
                             }}
                             onClick={window.print}
+                            data-tooltip="Print Result"
                           >
-                            <MdPrint size={20} style={{ marginTop: '-0.125rem' }} />
+                            <MdPrint
+                              size={SHARE_BUTTOn_SIZE / 2}
+                              style={{ marginTop: '-0.25rem' }}
+                            />
+                          </button>
+                          <button
+                            type="button"
+                            className="secondary"
+                            style={{
+                              minWidth: SHARE_BUTTOn_SIZE,
+                              maxWidth: SHARE_BUTTOn_SIZE,
+                              minHeight: SHARE_BUTTOn_SIZE,
+                              maxHeight: SHARE_BUTTOn_SIZE,
+                              borderRadius: SHARE_BUTTOn_SIZE,
+                              padding: 0,
+                            }}
+                            onClick={copyShareUrl}
+                            data-tooltip="Copy Share URL"
+                          >
+                            <MdCopyAll
+                              size={SHARE_BUTTOn_SIZE / 2}
+                              style={{ marginTop: '-0.25rem' }}
+                            />
+                          </button>
+                          <button
+                            type="button"
+                            style={{
+                              minWidth: SHARE_BUTTOn_SIZE,
+                              maxWidth: SHARE_BUTTOn_SIZE,
+                              minHeight: SHARE_BUTTOn_SIZE,
+                              maxHeight: SHARE_BUTTOn_SIZE,
+                              borderRadius: SHARE_BUTTOn_SIZE,
+                              padding: 0,
+                            }}
+                            onClick={openInGoogleMap}
+                            data-tooltip="Open in Google Map"
+                          >
+                            <MdMap size={SHARE_BUTTOn_SIZE / 2} style={{ marginTop: '-0.25rem' }} />
                           </button>
                         </div>
                       </div>
