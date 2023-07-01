@@ -13,6 +13,7 @@ const nextConfig = {
   publicRuntimeConfig: {
     // Will be available on both server and client
     APP_NAME: process.env.APP_NAME,
+    APP_URL: process.env.APP_URL,
     GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
 }

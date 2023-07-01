@@ -27,7 +27,7 @@ function Header() {
           </li>
         </ul>
 
-        <ul>
+        <ul className="hide-on-print">
           <li className={clsx({ active: pathname === '/about' })}>
             <Link href="/about">About</Link>
           </li>

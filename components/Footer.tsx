@@ -8,7 +8,7 @@ function Footer() {
         <ul>
           <li>&copy; 2023 Triptimizer</li>
         </ul>
-        <ul>
+        <ul className="hide-on-print">
           <li>
             <a href="mailto:" target="_blank" rel="noreferrer">
               <FaEnvelope />

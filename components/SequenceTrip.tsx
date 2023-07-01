@@ -53,17 +53,22 @@ function SequenceTrip() {
         </div>
         <div style={{ flex: 1 }} />
         {optimalTrip != null && (
-          <div>
+          <div className="hide-on-print">
             <button
-              onClick={() => {
+              onClick={async () => {
                 const confirmMessage =
-                  'Are you sure you want to start a new trip? this will reset the current trip.'
-                if (window.confirm(confirmMessage)) {
+                  'Are you sure you want to start a new trip? Starting a new trip will reset your current trip.'
+                const confirmed = await window.confirm(confirmMessage)
+                if (confirmed) {
                   resetSequenceTripForm()
                   setStep(1)
                 }
               }}
-              style={{ maxWidth: 200, marginLeft: 'auto' }}
+              style={{
+                maxWidth: 200,
+                marginLeft: 'auto',
+                marginBottom: 0,
+              }}
             >
               Start New Trip
             </button>

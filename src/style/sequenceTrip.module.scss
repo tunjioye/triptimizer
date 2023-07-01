@@ -57,6 +57,28 @@
     }
   }
 
+  .copyButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: fit-content;
+    height: fit-content;
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+    color: var(--secondary);
+
+    svg {
+      fill: var(--secondary);
+    }
+
+    &:focus svg,
+    &:hover svg {
+      fill: var(--primary);
+    }
+  }
+
   .removeButton {
     display: flex;
     align-items: center;
@@ -143,5 +165,15 @@
     font-size: 0.75rem;
     font-weight: bold;
     background: var(--primary-focus);
+  }
+
+  .shareResultContainer {
+    display: flex;
+    gap: 0.5rem;
+
+    & > * {
+      flex: 0;
+      margin-bottom: 0;
+    }
   }
 }

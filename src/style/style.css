@@ -53,3 +53,10 @@ details[role=list] summary::after {
   background-repeat: no-repeat;
   content: ""; */
 }
+
+/* css style to hide on print */
+@media print {
+  .hide-on-print {
+    display: none;
+  }
+}

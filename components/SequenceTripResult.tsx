@@ -5,6 +5,24 @@ import NoSSR from 'react-no-ssr'
 import { OptimizeTripByType } from '@/schema/types'
 import clsx from 'clsx'
 import BigNumber from 'bignumber.js'
+import {
+  EmailIcon,
+  EmailShareButton,
+  FacebookIcon,
+  FacebookShareButton,
+  LinkedinIcon,
+  LinkedinShareButton,
+  TelegramIcon,
+  TelegramShareButton,
+  TwitterIcon,
+  TwitterShareButton,
+  WhatsappIcon,
+  WhatsappShareButton,
+} from 'react-share'
+import { publicRuntimeConfig } from '@/config'
+import { FaCopy } from 'react-icons/fa'
+import { MdCopyAll, MdPrint } from 'react-icons/md'
+import { toast } from 'react-hot-toast'
 
 type Props = {
   readonly showHeading?: boolean
@@ -61,6 +79,25 @@ function SequenceTripResult(props: Props) {
       Math.ceil(totalDurationBN.div(60).decimalPlaces(1).toNumber()),
     ]
   }, [selectedAddressOptimalTrip])
+
+  const toAddresses = useMemo(() => {
+    if (selectedAddressOptimalTrip == null) return ''
+    return selectedAddressOptimalTrip.optimalRoute
+      .map(({ address }, index) => {
+        return `${index + 1}. ${address}`
+      })
+      .join(',\n')
+  }, [selectedAddressOptimalTrip])
+
+  const copyResult = async () => {
+    try {
+      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.`
+      await navigator.clipboard.writeText(text)
+      toast.success('Copied to clipboard')
+    } catch (error) {
+      toast.error('Failed to copy')
+    }
+  }
 
   return (
     <NoSSR>
@@ -186,15 +223,24 @@ function SequenceTripResult(props: Props) {
                         <ol className={styles.toAddresses}>
                           <li
                             style={{
+                              flex: 1,
                               display: 'flex',
-                              flexDirection: 'column',
-                              gap: '0.125rem',
+                              gap: '1rem',
                               margin: '0 0 0 -1.75rem',
                             }}
                           >
                             <span>
                               <b>TO</b>
                             </span>
+                            <button
+                              type="button"
+                              className={clsx(styles.copyButton, 'secondary')}
+                              style={{ marginLeft: 'auto' }}
+                              onClick={copyResult}
+                            >
+                              <FaCopy />
+                              <span>copy result</span>
+                            </button>
                           </li>
                           {selectedAddressOptimalTrip.optimalRoute.map((route, index) => {
                             const { address, distance, duration } = route
@@ -234,6 +280,84 @@ function SequenceTripResult(props: Props) {
                           </span>
                         </li>
                       </ol>
+                    )}
+
+                    {selectedAddressOptimalTrip.optimalRoute.length > 0 && (
+                      <div className="hide-on-print">
+                        <h5 className={styles.heading}>Share Result</h5>
+                        <div className={styles.shareResultContainer}>
+                          <button
+                            type="button"
+                            style={{
+                              minWidth: 32,
+                              maxWidth: 32,
+                              minHeight: 32,
+                              maxHeight: 32,
+                              borderRadius: 32,
+                              padding: 0,
+                            }}
+                            onClick={copyResult}
+                          >
+                            <MdCopyAll size={20} style={{ marginTop: '-0.125rem' }} />
+                          </button>
+                          <button
+                            type="button"
+                            className="secondary"
+                            style={{
+                              minWidth: 32,
+                              maxWidth: 32,
+                              minHeight: 32,
+                              maxHeight: 32,
+                              borderRadius: 32,
+                              padding: 0,
+                            }}
+                            onClick={window.print}
+                          >
+                            <MdPrint size={20} style={{ marginTop: '-0.125rem' }} />
+                          </button>
+                          <LinkedinShareButton
+                            url={`${publicRuntimeConfig.APP_URL}`}
+                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                            summary={`Optimal route FROM \n${selectedAddress}`}
+                            source={`${publicRuntimeConfig.APP_URL}`}
+                          >
+                            <LinkedinIcon size={32} round />
+                          </LinkedinShareButton>
+                          <TwitterShareButton
+                            url={`${publicRuntimeConfig.APP_URL}`}
+                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                            hashtags={['triptimizer', 'optimalroute']}
+                          >
+                            <TwitterIcon size={32} round />
+                          </TwitterShareButton>
+                          <WhatsappShareButton
+                            url={`${publicRuntimeConfig.APP_URL}`}
+                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                          >
+                            <WhatsappIcon size={32} round />
+                          </WhatsappShareButton>
+                          <FacebookShareButton
+                            url={`${publicRuntimeConfig.APP_URL}`}
+                            quote={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                            hashtag="#triptimizer"
+                          >
+                            <FacebookIcon size={32} round />
+                          </FacebookShareButton>
+                          <TelegramShareButton
+                            url={`${publicRuntimeConfig.APP_URL}`}
+                            title={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                          >
+                            <TelegramIcon size={32} round />
+                          </TelegramShareButton>
+                          <EmailShareButton
+                            url={`${publicRuntimeConfig.APP_URL}`}
+                            subject={`Optimal route FROM ${selectedAddress}`}
+                            body={`Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`}
+                          >
+                            <EmailIcon size={32} round />
+                          </EmailShareButton>
+                        </div>
+                      </div>
                     )}
                   </div>
                 )}
