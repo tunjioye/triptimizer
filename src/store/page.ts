@@ -12,7 +12,7 @@ export type ColorSchemeType = 'light' | 'dark'
 
 export type PageStoreStateType = {
   colorScheme: ColorSchemeType
-  addresses: Array<GooglePlacesAddress| string>
+  addresses: Array<GooglePlacesAddress | string>
   fetchingOptimalTrip: boolean
   optimizeTripBy: OptimizeTripByType
   optimalTrip: TripApiResponse['payload'] | null
@@ -45,7 +45,7 @@ export const setColorScheme = (colorScheme: ColorSchemeType = 'light') => {
   }))
 }
 
-export const setAddresses = (addresses: Array<GooglePlacesAddress| string> = []) => {
+export const setAddresses = (addresses: Array<GooglePlacesAddress | string> = []) => {
   return page.set((value) => ({
     ...value,
     addresses,
@@ -80,9 +80,12 @@ export const toggleColorScheme = () => {
 }
 
 export const resetSequenceTripForm = () => {
-  setAddresses()
-  setOptimalTrip()
-  setOptimizeTripBy()
+  return page.set((value) => ({
+    ...value,
+    addresses: [],
+    optimizeTripBy: 'distance',
+    optimalTrip: null,
+  }))
 }
 
 export const runTrip = async () => {

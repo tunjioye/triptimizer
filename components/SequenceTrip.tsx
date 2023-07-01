@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
-import { page, resetSequenceTripForm, setAddresses, setOptimalTrip } from '@/store/page'
+import {
+  page,
+  setOptimalTrip,
+  setOptimizeTripBy,
+  resetSequenceTripForm,
+} from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import SequenceTripForm from 'components/SequenceTripForm'
 import SequenceTripResult from 'components/SequenceTripResult'
@@ -52,10 +57,6 @@ function SequenceTrip() {
           if (data && data.requestId === requestId) {
             // set result
             setOptimalTrip(data)
-            const optimalTrips = data.optimalTrip[optimizeTripBy]
-            const optimalTripAddresses = optimalTrips.map((trip) => trip.startAddress)
-            // set addresses
-            setAddresses(optimalTripAddresses)
             return
           }
           toast.error('The result is no longer available. \nWe save results for just 2 days.')
@@ -70,8 +71,9 @@ function SequenceTrip() {
     if (isViewingResult) {
       return
     }
-    resetSequenceTripForm()
     setStep(1)
+    setOptimalTrip()
+    setOptimizeTripBy()
   }, [router.isReady, router.pathname, isViewingResult])
 
   return (
@@ -131,8 +133,8 @@ function SequenceTrip() {
 
                 const confirmed = await window.confirm(confirmMessage)
                 if (confirmed) {
-                  resetSequenceTripForm()
                   setStep(1)
+                  resetSequenceTripForm()
                   if (isViewingResult) {
                     router.push('/')
                     return

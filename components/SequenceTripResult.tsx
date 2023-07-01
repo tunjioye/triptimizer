@@ -20,8 +20,8 @@ import {
   WhatsappShareButton,
 } from 'react-share'
 import { publicRuntimeConfig } from '@/config'
-import { FaCopy } from 'react-icons/fa'
-import { MdCopyAll, MdPrint } from 'react-icons/md'
+import { FaCopy, FaMap } from 'react-icons/fa'
+import { MdCopyAll, MdMap, MdPrint } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
 
 type Props = {
@@ -100,6 +100,13 @@ function SequenceTripResult(props: Props) {
       toast.error('Failed to copy')
     }
   }
+
+  const toAddressesOnGoogleMap = useMemo(() => {
+    if (selectedAddressOptimalTrip == null) return ''
+    return selectedAddressOptimalTrip.optimalRoute.map(({ address }) => address).join('/')
+  }, [selectedAddressOptimalTrip])
+  const googleMapUrl = `https://www.google.com/maps/dir/${selectedAddress}/${toAddressesOnGoogleMap}`
+  const openInGoogleMap = () => window.open(googleMapUrl, '_blank')
 
   return (
     <NoSSR>
@@ -222,28 +229,46 @@ function SequenceTripResult(props: Props) {
                           </span>
                           <span>{selectedAddress}</span>
                         </li>
-                        <ol className={styles.toAddresses}>
-                          <li
+                        <li>&nbsp;</li>
+                        <li
+                          style={{
+                            flex: 1,
+                            display: 'flex',
+                            flexWrap: 'wrap',
+                            gap: '1rem',
+                          }}
+                        >
+                          <span>
+                            <b>TO</b>
+                          </span>
+                          <div
                             style={{
-                              flex: 1,
-                              display: 'flex',
+                              marginLeft: 'auto',
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              flexWrap: 'wrap',
                               gap: '1rem',
-                              margin: '0 0 0 -1.75rem',
                             }}
                           >
-                            <span>
-                              <b>TO</b>
-                            </span>
                             <button
                               type="button"
                               className={clsx(styles.copyButton, 'secondary')}
-                              style={{ marginLeft: 'auto' }}
                               onClick={copyResult}
                             >
                               <FaCopy />
                               <span>copy result</span>
                             </button>
-                          </li>
+                            <button
+                              type="button"
+                              className={clsx(styles.copyButton)}
+                              onClick={openInGoogleMap}
+                            >
+                              <FaMap />
+                              <span>open in map</span>
+                            </button>
+                          </div>
+                        </li>
+                        <ol className={styles.toAddresses}>
                           {selectedAddressOptimalTrip.optimalRoute.map((route, index) => {
                             const { address, distance, duration } = route
                             return (
@@ -273,6 +298,7 @@ function SequenceTripResult(props: Props) {
                             )
                           })}
                         </ol>
+                        <li>&nbsp;</li>
                         <li style={{ display: 'flex', flexDirection: 'column', gap: '0.125rem' }}>
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <b>TOTAL DISTANCE & DURATION</b>
@@ -298,9 +324,9 @@ function SequenceTripResult(props: Props) {
                               borderRadius: 32,
                               padding: 0,
                             }}
-                            onClick={copyResult}
+                            onClick={openInGoogleMap}
                           >
-                            <MdCopyAll size={20} style={{ marginTop: '-0.125rem' }} />
+                            <MdMap size={20} style={{ marginTop: '-0.1875rem' }} />
                           </button>
                           <button
                             type="button"
@@ -313,9 +339,9 @@ function SequenceTripResult(props: Props) {
                               borderRadius: 32,
                               padding: 0,
                             }}
-                            onClick={window.print}
+                            onClick={copyResult}
                           >
-                            <MdPrint size={20} style={{ marginTop: '-0.125rem' }} />
+                            <MdCopyAll size={20} style={{ marginTop: '-0.1875rem' }} />
                           </button>
                           <LinkedinShareButton
                             url={shareUrl}
@@ -352,6 +378,20 @@ function SequenceTripResult(props: Props) {
                           >
                             <EmailIcon size={32} round />
                           </EmailShareButton>
+                          <button
+                            type="button"
+                            style={{
+                              minWidth: 32,
+                              maxWidth: 32,
+                              minHeight: 32,
+                              maxHeight: 32,
+                              borderRadius: 32,
+                              padding: 0,
+                            }}
+                            onClick={window.print}
+                          >
+                            <MdPrint size={20} style={{ marginTop: '-0.125rem' }} />
+                          </button>
                         </div>
                       </div>
                     )}
