@@ -1,26 +1,31 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Client, DistanceMatrixRequest } from '@googlemaps/google-maps-services-js'
 import axios from 'axios'
-import { publicRuntimeConfig } from '@/config'
+import { serverRuntimeConfig } from '@/config'
 import getOptimalTrips from '@/utils/getOptimalTrips'
-import { TripApiResponse } from '@/schema/types'
+import { TripApiRequestBody, TripApiResponse } from '@/schema/types'
 import { nanoid } from 'nanoid'
+import { PassService } from '@/utils/PassService'
 
 const googleMapsClient = new Client({
   // @ts-ignore
   axiosInstance: axios.create({
     timeout: 30000,
     params: {
-      key: publicRuntimeConfig.GOOGLE_MAPS_API_KEY,
+      key: serverRuntimeConfig.GOOGLE_MAPS_API_KEY,
     },
   }),
 })
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method === 'POST') {
-    const { addresses } = req.body
+    const { addresses, pass = 'TESTPASS' } = req.body as TripApiRequestBody
     if (addresses.length < 2) {
       res.status(400).json({ message: 'Must provide at least 2 addresses' })
+      return
+    }
+    if (addresses.some((a) => typeof a === 'string' && a.trim() === '')) {
+      res.status(400).json({ message: 'Must provide valid addresses' })
       return
     }
 
@@ -45,6 +50,15 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       // transit_routing_preference: TransitRoutingPreference.less_walking,
     }
 
+    try {
+      const passService = new PassService()
+      await passService.incrementUsage(pass)
+    } catch (error: any) {
+      console.error(error)
+      res.status(400).json({ ...error })
+      return
+    }
+
     const payload = await googleMapsClient
       .distancematrix({
         // @ts-ignore
@@ -53,7 +67,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       })
       .then((r) => {
         const invalidAddresses = mappedAddresses.filter((__a: string, i: number) => {
-          return r.data.origin_addresses[i] === ''
+          return r.data.origin_addresses[i] === '' || r.data.rows[i].elements[i].status != 'OK'
         })
         if (invalidAddresses.length > 0) {
           return {
