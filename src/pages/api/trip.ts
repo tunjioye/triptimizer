@@ -52,6 +52,20 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         timeout: 20000,
       })
       .then((r) => {
+        const invalidAddresses = mappedAddresses.filter((__a: string, i: number) => {
+          return r.data.origin_addresses[i] === ''
+        })
+        if (invalidAddresses.length > 0) {
+          return {
+            error_message: `${invalidAddresses.length} Invalid Address${
+              invalidAddresses.length === 1 ? '' : 'es'
+            }. Remove the invalid address${
+              invalidAddresses.length === 1 ? '' : 'es'
+            } and try again.`,
+            invalid_addresses: invalidAddresses,
+          }
+        }
+
         const payload: TripApiResponse['payload'] = {
           requestId: nanoid(12),
           optimalTrip: {

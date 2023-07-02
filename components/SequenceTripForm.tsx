@@ -1,7 +1,7 @@
 import React, { MouseEventHandler } from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
-import { FaMinusCircle, FaTrash } from 'react-icons/fa'
+import { FaCopy, FaMinusCircle, FaPaste, FaTrash } from 'react-icons/fa'
 import { page, setAddresses, runTrip } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import { GoogleApiWrapper, IProvidedProps } from 'google-maps-react'
@@ -9,6 +9,7 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
 import { publicRuntimeConfig } from '@/config'
 import { GooglePlacesAddress } from '@/schema/types'
 import { MAX_NUMBER_OF_ADDRESSES } from 'components/SequenceTrip'
+import { toast } from 'react-hot-toast'
 
 type Props = IProvidedProps & {
   readonly showHeading?: boolean
@@ -35,6 +36,25 @@ function SequenceTripForm(props: Props) {
 
   const disableForm = addresses.length >= MAX_NUMBER_OF_ADDRESSES
   const disableSequenceTripButton = addresses.length < 2
+
+  const copyAddressesFromClipboard = async () => {
+    try {
+      const text = await navigator.clipboard.readText()
+      const addresses = text
+        .split('\n')
+        // remove line numbers like (01. or 1. at the beginning of the line)
+        .map((address) => address.replace(/^\d+\.\s/g, ''))
+        // filter addresses that are empty
+        .filter((address) => address.trim() !== '')
+        // filter addresses that do not end with "canada" or "canada{special characters}" in lowercase using regex
+        .filter((address) => /canada[^\w]*$/.test(address.toLowerCase()))
+        // remove ending special characters like , or .
+        .map((address) => address.replace(/[^\w\s]|_/g, ''))
+      setAddresses(addresses)
+    } catch (error) {
+      toast.error('Failed to copy from clipboard')
+    }
+  }
 
   return (
     <NoSSR>
@@ -177,6 +197,17 @@ function SequenceTripForm(props: Props) {
               >
                 <FaTrash />
                 <span>clear all</span>
+              </button>
+            )}
+            {addresses.length === 0 && (
+              <button
+                type="button"
+                className={clsx(styles.copyButton)}
+                onClick={copyAddressesFromClipboard}
+                data-tooltip="from last copied text"
+              >
+                <FaPaste />
+                <span>paste addresses</span>
               </button>
             )}
           </div>

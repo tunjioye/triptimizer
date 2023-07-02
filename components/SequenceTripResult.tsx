@@ -88,7 +88,7 @@ function SequenceTripResult(props: Props) {
       .map(({ address }, index) => {
         return `${index + 1}. ${address}`
       })
-      .join(',\n')
+      .join('\n')
   }, [selectedAddressOptimalTrip])
 
   const shareUrl = `${publicRuntimeConfig.APP_URL}?trip=${requestId}`
