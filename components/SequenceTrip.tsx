@@ -16,7 +16,7 @@ export const MAX_NUMBER_OF_ADDRESSES = 10
 function SequenceTrip() {
   const router = useRouter()
   const { trip: requestId } = router.query
-  const { optimalTrip, optimizeTripBy = 'distance' } = page.use()
+  const { pass = '', optimalTrip, optimizeTripBy = 'distance' } = page.use()
   const isViewingResult = requestId && typeof requestId === 'string'
   const showStartNewTripButton = isViewingResult || optimalTrip != null
 
@@ -90,7 +90,7 @@ function SequenceTrip() {
               data-step={2}
               open={step === 2}
               onClick={(e) => e.preventDefault()}
-              // className={clsx({ disabled: optimalTrip != null })}
+              className={clsx({ disabled: pass.trim() === '' })}
             >
               <summary onClick={() => changeToStep(2)}>
                 <strong>Sequence Trip</strong>
@@ -103,7 +103,7 @@ function SequenceTrip() {
             data-step={3}
             open={step === 3}
             onClick={(e) => e.preventDefault()}
-            className={clsx({ disabled: optimalTrip == null })}
+            className={clsx({ disabled: pass.trim() === '' || optimalTrip == null })}
           >
             <summary onClick={() => changeToStep(3)}>
               <strong

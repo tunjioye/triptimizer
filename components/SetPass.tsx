@@ -37,7 +37,10 @@ function SetPass(props: Props) {
               placeholder="Early Access Pass (TP******)"
               required
               value={passState}
-              onChange={(e) => setPassState(e.target.value.toUpperCase().trim().slice(0, 8))}
+              onChange={(e) => {
+                setPassState(e.target.value.toUpperCase().trim().slice(0, 8))
+                if (e.target.value.trim() === '') setPass('')
+              }}
               onKeyUp={(e) => {
                 if (e.key === 'Enter') {
                   handleSetPass()

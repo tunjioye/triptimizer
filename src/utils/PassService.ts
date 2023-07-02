@@ -17,8 +17,6 @@ const jwt = new JWT({
 })
 
 export class PassService {
-  private doc = new GoogleSpreadsheet(SHEET_ID, jwt)
-
   constructor() {}
 
   generate() {
@@ -61,8 +59,9 @@ export class PassService {
       const { firstname, lastname, email, phone, profession } = earlyAccessUser
 
       try {
-        await this.doc.loadInfo()
-        const sheet = this.doc.sheetsByIndex[0]
+        const doc = new GoogleSpreadsheet(SHEET_ID, jwt)
+        await doc.loadInfo()
+        const sheet = doc.sheetsByIndex[0]
         const rowsRes = await sheet.getRows()
         const rows = rowsRes.map((r) => r.toObject() as EarlyAccessSheetRow)
 
@@ -126,8 +125,9 @@ export class PassService {
   }> {
     return new Promise(async (resolve, reject) => {
       try {
-        await this.doc.loadInfo()
-        const sheet = this.doc.sheetsByIndex[0]
+        const doc = new GoogleSpreadsheet(SHEET_ID, jwt)
+        await doc.loadInfo()
+        const sheet = doc.sheetsByIndex[0]
         const rowsRes = await sheet.getRows()
         const rows = rowsRes.map((r) => r.toObject() as EarlyAccessSheetRow)
 

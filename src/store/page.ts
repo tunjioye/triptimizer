@@ -35,7 +35,7 @@ const initialState: PageStoreStateType = {
 export const page = entity(initialState, [
   persistence('tm_page', {
     serializeFn: (val) => {
-      const { colorScheme, addresses, pass } = val
+      const { colorScheme = 'light', addresses = [], pass = '' } = val
       return JSON.stringify({ colorScheme, addresses, pass })
     },
   }),
