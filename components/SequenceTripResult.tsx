@@ -401,7 +401,7 @@ function SequenceTripResult(props: Props) {
                               padding: 0,
                             }}
                             onClick={copyShareUrl}
-                            data-tooltip="Copy Share URL"
+                            data-tooltip="Copy Result Link"
                           >
                             <MdCopyAll
                               size={SHARE_BUTTOn_SIZE / 2}
