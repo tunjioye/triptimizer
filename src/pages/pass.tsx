@@ -60,7 +60,9 @@ function PassPage() {
 
       setSubmitting(true)
       const res = await requestForPass({ earlyAccessUser })
-      toast.success(res.payload.message)
+      if (res.payload.message) {
+        toast.success('Request for early access pass submitted successfully')
+      }
     } finally {
       setSubmitting(false)
     }

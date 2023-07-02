@@ -4,6 +4,8 @@ import { page, setPass } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import Link from 'next/link'
 
+const VALID_PASS_LENGTH = 8
+
 type Props = {
   readonly showHeading?: boolean
   readonly onSet: () => void
@@ -38,7 +40,7 @@ function SetPass(props: Props) {
               required
               value={passState}
               onChange={(e) => {
-                setPassState(e.target.value.toUpperCase().trim().slice(0, 8))
+                setPassState(e.target.value.toUpperCase().trim().slice(0, VALID_PASS_LENGTH))
                 if (e.target.value.trim() === '') setPass('')
               }}
               onKeyUp={(e) => {
@@ -46,6 +48,7 @@ function SetPass(props: Props) {
                   handleSetPass()
                 }
               }}
+              style={{ fontWeight: passState.length >= VALID_PASS_LENGTH ? 'bold' : undefined }}
             />
             <Link href="/pass">
               <small>Request for Early Access Pass</small>
@@ -55,7 +58,7 @@ function SetPass(props: Props) {
             type="submit"
             onClick={handleSetPass}
             className={styles.addButton}
-            disabled={passState.length < 8}
+            disabled={passState.length < VALID_PASS_LENGTH}
             style={{ alignSelf: 'flex-start' }}
           >
             Set
