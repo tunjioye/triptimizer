@@ -2,7 +2,7 @@ import React from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
 import { FaMinusCircle, FaPaste, FaTrash } from 'react-icons/fa'
-import { page, setAddresses, runTrip } from '@/store/page'
+import { page, setAddresses, runTrip, setPass } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import { GoogleApiWrapper, IProvidedProps } from 'google-maps-react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
@@ -19,7 +19,7 @@ function SequenceTripForm(props: Props) {
   const { showHeading = true } = props
   const [address, setAddress] = React.useState<GooglePlacesAddress | null>(null)
 
-  const { addresses = [], fetchingOptimalTrip } = page.use()
+  const { pass = '', addresses = [], fetchingOptimalTrip } = page.use()
   const addAddress = () => {
     if (addresses.length >= MAX_NUMBER_OF_ADDRESSES) {
       window.alert('You can add a maximum of 10 addresses.')

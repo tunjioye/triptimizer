@@ -4,10 +4,10 @@ import GooglePlacesAutocompleteProps, { Option } from 'react-google-places-autoc
 export type PublicRuntimeConfig = {
   APP_NAME: string
   APP_URL: string
+  GOOGLE_MAPS_API_KEY: string
 }
 
 export type ServerRuntimeConfig = {
-  GOOGLE_MAPS_API_KEY: string
   GOOGLE_SHEETS_API_KEY: string
   GOOGLE_SHEETS_SHEET_ID: string
   GOOGLE_SHEETS_CLIENT_EMAIL: string

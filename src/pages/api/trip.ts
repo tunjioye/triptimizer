@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next'
 import { Client, DistanceMatrixRequest } from '@googlemaps/google-maps-services-js'
 import axios from 'axios'
-import { serverRuntimeConfig } from '@/config'
+import { publicRuntimeConfig } from '@/config'
 import getOptimalTrips from '@/utils/getOptimalTrips'
 import { TripApiRequestBody, TripApiResponse } from '@/schema/types'
 import { nanoid } from 'nanoid'
@@ -12,7 +12,7 @@ const googleMapsClient = new Client({
   axiosInstance: axios.create({
     timeout: 30000,
     params: {
-      key: serverRuntimeConfig.GOOGLE_MAPS_API_KEY,
+      key: publicRuntimeConfig.GOOGLE_MAPS_API_KEY,
     },
   }),
 })

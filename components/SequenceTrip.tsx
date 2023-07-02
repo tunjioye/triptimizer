@@ -3,6 +3,7 @@ import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
 import { page, setOptimalTrip, setOptimizeTripBy, resetSequenceTripForm } from '@/store/page'
 import NoSSR from 'react-no-ssr'
+import SetPass from 'components/SetPass'
 import SequenceTripForm from 'components/SequenceTripForm'
 import SequenceTripResult from 'components/SequenceTripResult'
 import { kv } from '@vercel/kv'
@@ -66,7 +67,7 @@ function SequenceTrip() {
     if (isViewingResult) {
       return
     }
-    setStep(2)
+    setStep(1)
     setOptimalTrip()
     setOptimizeTripBy()
   }, [router.isReady, router.pathname, isViewingResult])
@@ -76,16 +77,11 @@ function SequenceTrip() {
       <section className={clsx(styles.sequenceTrip)}>
         <div>
           {!isViewingResult && (
-            <details
-              data-step={1}
-              open={step === 1}
-              onClick={(e) => e.preventDefault()}
-              // className={clsx({ disabled: optimalTrip != null })}
-            >
+            <details data-step={1} open={step === 1} onClick={(e) => e.preventDefault()}>
               <summary onClick={() => changeToStep(1)}>
-                <strong>Provide Early Access Pass</strong>
+                <strong>Set Early Access Pass</strong>
               </summary>
-              <div>Early access pass is required to use this service.</div>
+              <SetPass showHeading={false} onSet={() => changeToStep(2)} />
             </details>
           )}
 

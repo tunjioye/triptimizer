@@ -3,6 +3,8 @@ import {
   GooglePlacesAddress,
   // OptimalTripMap,
   OptimizeTripByType,
+  PassApiRequestBody,
+  PassApiResponse,
   TripApiResponse,
 } from '@/schema/types'
 import { handleApiError } from '@/utils'
@@ -12,6 +14,7 @@ export type ColorSchemeType = 'light' | 'dark'
 
 export type PageStoreStateType = {
   colorScheme: ColorSchemeType
+  pass: string
   addresses: Array<GooglePlacesAddress | string>
   fetchingOptimalTrip: boolean
   optimizeTripBy: OptimizeTripByType
@@ -21,6 +24,7 @@ export type PageStoreStateType = {
 // initial state
 const initialState: PageStoreStateType = {
   colorScheme: 'light',
+  pass: '',
   addresses: [],
   fetchingOptimalTrip: false,
   optimizeTripBy: 'distance',
@@ -31,8 +35,8 @@ const initialState: PageStoreStateType = {
 export const page = entity(initialState, [
   persistence('tm_page', {
     serializeFn: (val) => {
-      const { colorScheme, addresses } = val
-      return JSON.stringify({ colorScheme, addresses })
+      const { colorScheme, addresses, pass } = val
+      return JSON.stringify({ colorScheme, addresses, pass })
     },
   }),
 ])
@@ -42,6 +46,13 @@ export const setColorScheme = (colorScheme: ColorSchemeType = 'light') => {
   return page.set((value) => ({
     ...value,
     colorScheme,
+  }))
+}
+
+export const setPass = (pass: string = '') => {
+  return page.set((value) => ({
+    ...value,
+    pass,
   }))
 }
 
@@ -89,7 +100,7 @@ export const resetSequenceTripForm = () => {
 }
 
 export const runTrip = async () => {
-  const { addresses } = page.get()
+  const { pass, addresses } = page.get()
   try {
     setFetchingOptimalTrip(true)
     const res: TripApiResponse = await fetch('/api/trip', {
@@ -98,6 +109,7 @@ export const runTrip = async () => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        pass,
         addresses,
       }),
     }).then((res) => {
@@ -119,4 +131,31 @@ export const runTrip = async () => {
   } finally {
     setFetchingOptimalTrip(false)
   }
+}
+
+export const requestForPass = async (requestData: PassApiRequestBody): Promise<PassApiResponse> => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      const res: PassApiResponse = await fetch('/api/pass', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      }).then((res) => {
+        return new Promise(async (resolve, reject) => {
+          if (res.ok) {
+            resolve(res.json())
+            return
+          }
+          const error: ApiError = await res.json()
+          reject({ status: res.status, message: error.message || res.statusText })
+        })
+      })
+      resolve(res)
+    } catch (error) {
+      handleApiError(error as ApiError)
+      reject(error)
+    }
+  })
 }

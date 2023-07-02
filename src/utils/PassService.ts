@@ -76,7 +76,7 @@ export class PassService {
           new BigNumber(existingUser.usage).isLessThan(existingUser.limit)
         ) {
           const payload: PassApiResponse['payload'] = {
-            message: `Pass already generated. Used ${existingUser.usage} of ${existingUser.limit} times`,
+            message: `Pass already generated. \nUsed ${existingUser.usage} of ${existingUser.limit} times`,
             // hide pass from response
             user: { ...existingUser, pass: existingUser.pass.replaceAll(/./g, '*') },
           }
@@ -138,7 +138,7 @@ export class PassService {
         if (!user) {
           reject({
             status: 'INVALID_PASS',
-            message: 'Invalid Pass. Register as an early user to get a pass.',
+            message: 'Invalid Pass. \nRegister as early user to get a pass.',
           })
           return
         }
@@ -147,7 +147,7 @@ export class PassService {
         if (new BigNumber(user.usage).isGreaterThanOrEqualTo(user.limit)) {
           reject({
             status: 'PASS_LIMIT_REACHED',
-            message: 'Pass limit reached. Register as an early user to get a new pass.',
+            message: 'Pass limit reached. \nRegister as early user to get a new pass.',
           })
           return
         }

@@ -1,4 +1,7 @@
+import { PassApiResponse } from '@/schema/types'
+import { requestForPass } from '@/store/page'
 import React, { useState } from 'react'
+import { toast } from 'react-hot-toast'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 
 type FormState = {
@@ -11,6 +14,7 @@ type FormState = {
 }
 
 function PassPage() {
+  const [submitting, setSubmitting] = useState(false)
   const [formState, setFormState] = useState<FormState>({
     firstname: '',
     lastname: '',
@@ -27,7 +31,7 @@ function PassPage() {
     })
   }
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     try {
       if (!formState.phone) {
@@ -43,13 +47,22 @@ function PassPage() {
       }
 
       const { country, countryCallingCode, nationalNumber } = parsedPhone
-      const requestData = {
-        ...formState,
+      const earlyAccessUser = {
+        firstname: formState.firstname,
+        lastname: formState.lastname,
+        email: formState.email,
         phone: `${country}-${countryCallingCode}-${nationalNumber}`,
+        profession:
+          formState.professionOption === 'Other'
+            ? formState.profession
+            : formState.professionOption,
       }
-      console.log('requestData', requestData)
-    } catch (error: any) {
-      console.error(error)
+
+      setSubmitting(true)
+      const res = await requestForPass({ earlyAccessUser })
+      toast.error(res.payload.message)
+    } finally {
+      setSubmitting(false)
     }
   }
 
@@ -148,7 +161,9 @@ function PassPage() {
 
         <br />
 
-        <button type="submit">Register for Early Access</button>
+        <button type="submit" aria-busy={submitting}>
+          Register for Early Access
+        </button>
       </form>
 
       <br />

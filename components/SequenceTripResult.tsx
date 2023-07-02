@@ -92,10 +92,10 @@ function SequenceTripResult(props: Props) {
   }, [selectedAddressOptimalTrip])
 
   const shareUrl = `${publicRuntimeConfig.APP_URL}?trip=${requestId}`
-  const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\r\n`
+  const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`
   const copyResult = async () => {
     try {
-      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\r\n${shareUrl}`
+      const text = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n${shareUrl}`
       await navigator.clipboard.writeText(text)
       toast.success('Copied result to clipboard')
     } catch (error) {
