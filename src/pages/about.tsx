@@ -1,6 +1,6 @@
 import React from 'react'
 
-function about() {
+function AboutPage() {
   return (
     <main className="container" role="document">
       <hgroup>
@@ -47,4 +47,4 @@ function about() {
   )
 }
 
-export default about
+export default AboutPage

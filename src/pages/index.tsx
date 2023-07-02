@@ -1,6 +1,6 @@
-import SequenceTrip from "components/SequenceTrip";
+import SequenceTrip from 'components/SequenceTrip'
 
-export default function Home() {
+export default function HomePage() {
   return (
     <main className="container">
       <SequenceTrip />

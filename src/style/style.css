@@ -60,3 +60,29 @@ details[role=list] summary::after {
     display: none;
   }
 }
+
+.PhoneInput {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.25rem;
+}
+.PhoneInput > *:first-child {
+  position: relative;
+  width: 12rem;
+}
+.PhoneInput > *:first-child select {
+  padding-left: 3.125rem;
+}
+.PhoneInput > *:first-child select + div {
+  position: absolute;
+  top: 0.2rem;
+  left: 0;
+  padding: 0.5rem;
+}
+.PhoneInputCountry img {
+  height: 1.5rem;
+}
+.PhoneInput > *:last-child {
+  flex: 1;
+}

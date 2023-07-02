@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import styles from '@/style/sequenceTrip.module.scss'
 import clsx from 'clsx'
-import {
-  page,
-  setOptimalTrip,
-  setOptimizeTripBy,
-  resetSequenceTripForm,
-} from '@/store/page'
+import { page, setOptimalTrip, setOptimizeTripBy, resetSequenceTripForm } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import SequenceTripForm from 'components/SequenceTripForm'
 import SequenceTripResult from 'components/SequenceTripResult'
@@ -27,7 +22,7 @@ function SequenceTrip() {
   const [step, setStep] = useState<number>(1)
   const changeToStep = (newStep: number) => {
     if (step === newStep) {
-      setStep(0)
+      setStep(1)
       return
     }
     setStep(newStep)
@@ -36,7 +31,7 @@ function SequenceTrip() {
   // save trip result to KV
   useEffect(() => {
     if (optimalTrip != null) {
-      setStep(2)
+      setStep(3)
       if (isViewingResult) {
         return
       }
@@ -71,7 +66,7 @@ function SequenceTrip() {
     if (isViewingResult) {
       return
     }
-    setStep(1)
+    setStep(2)
     setOptimalTrip()
     setOptimizeTripBy()
   }, [router.isReady, router.pathname, isViewingResult])
@@ -88,33 +83,45 @@ function SequenceTrip() {
               // className={clsx({ disabled: optimalTrip != null })}
             >
               <summary onClick={() => changeToStep(1)}>
-                <strong>STEP 1 &middot; Sequence Trip</strong>
+                <strong>Provide Early Access Pass</strong>
+              </summary>
+              <div>Early access pass is required to use this service.</div>
+            </details>
+          )}
+
+          {!isViewingResult && (
+            <details
+              data-step={2}
+              open={step === 2}
+              onClick={(e) => e.preventDefault()}
+              // className={clsx({ disabled: optimalTrip != null })}
+            >
+              <summary onClick={() => changeToStep(2)}>
+                <strong>Sequence Trip</strong>
               </summary>
               <SequenceTripForm showHeading={false} />
             </details>
           )}
 
           <details
-            data-step={2}
-            open={step === 2}
+            data-step={3}
+            open={step === 3}
             onClick={(e) => e.preventDefault()}
             className={clsx({ disabled: optimalTrip == null })}
           >
-            <summary onClick={() => changeToStep(2)}>
-              {isViewingResult ? (
-                <strong
-                  style={{
-                    display: 'inline-flex',
-                    justifyContent: 'space-between',
-                    gap: '0.25rem',
-                  }}
-                >
-                  <span>Sequence Result </span>
+            <summary onClick={() => changeToStep(3)}>
+              <strong
+                style={{
+                  display: 'inline-flex',
+                  justifyContent: 'space-between',
+                  gap: '0.25rem',
+                }}
+              >
+                <span>Sequence Result </span>
+                {isViewingResult && (
                   <span className={clsx(styles.startAddressIndicator)}>{requestId}</span>
-                </strong>
-              ) : (
-                <strong>STEP 2 &middot; Sequence Result</strong>
-              )}
+                )}
+              </strong>
             </summary>
             <SequenceTripResult showHeading={false} />
           </details>

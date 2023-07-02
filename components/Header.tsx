@@ -32,7 +32,7 @@ function Header() {
             <Link href="/about">About</Link>
           </li>
           <li className={clsx({ active: pathname === '/contact' })}>
-            <Link href="/contact">Contact</Link>
+            <Link href="/pass">Get Pass</Link>
           </li>
           <NoSSR
             onSSR={
