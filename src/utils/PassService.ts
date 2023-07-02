@@ -9,7 +9,7 @@ const PASS_LIMIT = 50
 const SHEET_ID = serverRuntimeConfig.GOOGLE_SHEETS_SHEET_ID
 const jwt = new JWT({
   email: serverRuntimeConfig.GOOGLE_SHEETS_CLIENT_EMAIL,
-  key: serverRuntimeConfig.GOOGLE_SHEETS_PRIVATE_KEY,
+  key: serverRuntimeConfig.GOOGLE_SHEETS_PRIVATE_KEY.split(String.raw`\n`).join('\n'),
   scopes: [
     'https://www.googleapis.com/auth/spreadsheets',
     'https://www.googleapis.com/auth/drive.file',
@@ -17,6 +17,8 @@ const jwt = new JWT({
 })
 
 export class PassService {
+  private doc = new GoogleSpreadsheet(SHEET_ID, jwt)
+
   constructor() {}
 
   generate() {
@@ -59,9 +61,8 @@ export class PassService {
       const { firstname, lastname, email, phone, profession } = earlyAccessUser
 
       try {
-        const doc = new GoogleSpreadsheet(SHEET_ID, jwt)
-        await doc.loadInfo()
-        const sheet = doc.sheetsByIndex[0]
+        await this.doc.loadInfo()
+        const sheet = this.doc.sheetsByIndex[0]
         const rowsRes = await sheet.getRows()
         const rows = rowsRes.map((r) => r.toObject() as EarlyAccessSheetRow)
 
@@ -125,9 +126,8 @@ export class PassService {
   }> {
     return new Promise(async (resolve, reject) => {
       try {
-        const doc = new GoogleSpreadsheet(SHEET_ID, jwt)
-        await doc.loadInfo()
-        const sheet = doc.sheetsByIndex[0]
+        await this.doc.loadInfo()
+        const sheet = this.doc.sheetsByIndex[0]
         const rowsRes = await sheet.getRows()
         const rows = rowsRes.map((r) => r.toObject() as EarlyAccessSheetRow)
 
@@ -147,7 +147,7 @@ export class PassService {
         if (new BigNumber(user.usage).isGreaterThanOrEqualTo(user.limit)) {
           reject({
             status: 'PASS_LIMIT_REACHED',
-            message: 'Pass limit reached. \nRegister as early user to get a new pass.',
+            message: 'Pass limit reached. \nRegister as an early user to get a new pass.',
           })
           return
         }
