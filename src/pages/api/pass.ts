@@ -11,7 +11,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       if (payload) {
         sendMail({
           subject: 'Triptimizer - New Early Access User',
-          htmlContent: `
+          html: `
           <div>
             <h4>New Early Access User</h4>
             <p>First Name: ${payload.user.firstname}</p>

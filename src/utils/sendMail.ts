@@ -1,38 +1,26 @@
-import nodemailer from 'nodemailer'
+import { Resend } from 'resend'
 import { serverRuntimeConfig } from '@/config'
 
-const smtpUsername = serverRuntimeConfig.SMTP_USER
-const smtpPassword = serverRuntimeConfig.SMTP_PASS
-const smtpHost = serverRuntimeConfig.SMTP_HOST
-const smtpPort = serverRuntimeConfig.SMTP_PORT
-const fromEmail = serverRuntimeConfig.SMTP_FROM
-const toEmail = serverRuntimeConfig.SMTP_TO
+const fromEmail = serverRuntimeConfig.FROM_EMAIL
+const toEmail = serverRuntimeConfig.TO_EMAIL
 
 export const sendMail = ({
   to = toEmail,
   subject,
-  htmlContent,
+  html,
 }: {
   to?: string
   subject: string
-  htmlContent: string
+  html: string
 }) => {
-  let transporter = nodemailer.createTransport({
-    host: smtpHost,
-    port: smtpPort,
-    secure: true,
-    auth: {
-      user: smtpUsername,
-      pass: smtpPassword,
-    },
-  })
-  let mailOptions = {
+  const resend = new Resend(serverRuntimeConfig.RESEND_API_KEY)
+  const mailOptions = {
     from: fromEmail,
-    to: to,
-    subject: subject,
-    html: htmlContent,
+    to,
+    subject,
+    html,
   }
-  return transporter.sendMail(mailOptions) // promise
+  return resend.emails.send(mailOptions)
 }
 
 export default sendMail
