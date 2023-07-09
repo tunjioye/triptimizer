@@ -48,7 +48,7 @@ export class PassService {
     }
   }
 
-  addUserToSheet(requestBody: PassApiRequestBody) {
+  addUserToSheet(requestBody: PassApiRequestBody): Promise<PassApiResponse['payload'] | undefined> {
     return new Promise(async (resolve, reject) => {
       try {
         await this.validateAddUserToSheet(requestBody)

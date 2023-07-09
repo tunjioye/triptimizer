@@ -1,19 +1,19 @@
-import { serverRuntimeConfig } from '@/config'
 import nodemailer from 'nodemailer'
+import { serverRuntimeConfig } from '@/config'
 
 const smtpUsername = serverRuntimeConfig.SMTP_USER
 const smtpPassword = serverRuntimeConfig.SMTP_PASS
 const smtpHost = serverRuntimeConfig.SMTP_HOST
 const smtpPort = serverRuntimeConfig.SMTP_PORT
 const fromEmail = serverRuntimeConfig.SMTP_FROM
-const toEmail = serverRuntimeConfig.SMTP_FROM
+const toEmail = serverRuntimeConfig.SMTP_TO
 
-const sendMail = ({
+export const sendMail = ({
   to = toEmail,
   subject,
   htmlContent,
 }: {
-  to: string
+  to?: string
   subject: string
   htmlContent: string
 }) => {
