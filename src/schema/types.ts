@@ -12,6 +12,12 @@ export type ServerRuntimeConfig = {
   GOOGLE_SHEETS_SHEET_ID: string
   GOOGLE_SHEETS_CLIENT_EMAIL: string
   GOOGLE_SHEETS_PRIVATE_KEY: string
+  SMTP_HOST: string
+  SMTP_PORT: number
+  SMTP_USER: string
+  SMTP_PASS: string
+  SMTP_FROM: string
+  SMTP_TO: string
 }
 
 export type GooglePlacesAutocompleteSelectProps = Pick<GooglePlacesAutocompleteProps, 'selectProps'>
