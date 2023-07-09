@@ -10,6 +10,8 @@ import { publicRuntimeConfig } from '@/config'
 import { GooglePlacesAddress } from '@/schema/types'
 import { MAX_NUMBER_OF_ADDRESSES } from 'components/SequenceTrip'
 import { toast } from 'react-hot-toast'
+import { PROVINCE_IN_CANADA } from '@/constants/PROVINCE_IN_CANADA'
+import { CITIES_IN_CANADA } from '@/constants/CITIES_IN_CANADA'
 
 type Props = IProvidedProps & {
   readonly showHeading?: boolean
@@ -46,11 +48,29 @@ function SequenceTripForm(props: Props) {
         .map((address) => address.replace(/^\d+\.\s/g, ''))
         // filter addresses that are empty
         .filter((address) => address.trim() !== '')
-        // filter addresses that do not end with "canada" or "canada{special characters}" in lowercase using regex
-        .filter((address) => /canada[^\w]*$/.test(address.toLowerCase()))
+        // filer addresses that contain a province abbreviation or province name in canada using regex
+        .filter((address) => {
+          const provinceAbbreviations = Object.keys(PROVINCE_IN_CANADA)
+          const provinceNames = Object.values(PROVINCE_IN_CANADA)
+          return (
+            provinceAbbreviations.some((province) => address.includes(province)) ||
+            provinceNames.some((province) => {
+              const regex = new RegExp(province, 'i')
+              return regex.test(address)
+            })
+          )
+        })
+        // filer addresses that contain a city in canada using regex
+        .filter((address) => {
+          return CITIES_IN_CANADA.some((city) => {
+            const regex = new RegExp(city, 'i')
+            return regex.test(address)
+          })
+        })
         // remove ending special characters like , or .
         .map((address) => address.replace(/[^\w\s]|_/g, ''))
       setAddresses(addresses)
+      toast.success(`Copied ${addresses.length} addresses from clipboard`)
     } catch (error) {
       toast.error('Failed to copy from clipboard')
     }
