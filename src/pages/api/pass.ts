@@ -25,6 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             <p>Created: ${payload.user.created}</p>
           </div>
           `,
+        }).then((res) => {
+          console.log(res)
         })
       }
       res.status(200).json({ payload })
