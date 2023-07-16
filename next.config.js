@@ -9,9 +9,13 @@ const nextConfig = {
     KV_REST_API_URL: process.env.KV_REST_API_URL,
     KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
     KV_REST_API_READ_ONLY_TOKEN: process.env.KV_REST_API_READ_ONLY_TOKEN,
+    // app env
+    APP_NAME: process.env.APP_NAME,
+    APP_URL: process.env.APP_URL,
+    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
   serverRuntimeConfig: {
-    // Will be available only on server-side
+    // will be available only on server-side
     GOOGLE_SHEETS_API_KEY: process.env.GOOGLE_SHEETS_API_KEY,
     GOOGLE_SHEETS_SHEET_ID: process.env.GOOGLE_SHEETS_SHEET_ID,
     GOOGLE_SHEETS_CLIENT_EMAIL: process.env.GOOGLE_SHEETS_CLIENT_EMAIL,
@@ -21,10 +25,8 @@ const nextConfig = {
     TO_EMAIL: process.env.TO_EMAIL,
   },
   publicRuntimeConfig: {
-    // Will be available on both server and client
+    // will be available only on both client-side and server-side
     APP_NAME: process.env.APP_NAME,
-    APP_URL: process.env.APP_URL,
-    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
 }
 

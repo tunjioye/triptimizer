@@ -6,7 +6,6 @@ import { page, setAddresses, runTrip, setPass } from '@/store/page'
 import NoSSR from 'react-no-ssr'
 import { GoogleApiWrapper, IProvidedProps } from 'google-maps-react'
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete'
-import { publicRuntimeConfig } from '@/config'
 import { GooglePlacesAddress } from '@/schema/types'
 import { MAX_NUMBER_OF_ADDRESSES } from 'components/SequenceTrip'
 import { toast } from 'react-hot-toast'
@@ -84,7 +83,7 @@ function SequenceTripForm(props: Props) {
         <form onSubmit={(e) => e.preventDefault()} className={styles.sequenceTripForm}>
           <div style={{ width: 'calc(100% - 100px - 0.5rem)' }}>
             <GooglePlacesAutocomplete
-              apiKey={publicRuntimeConfig.GOOGLE_MAPS_API_KEY}
+              apiKey={process.env.GOOGLE_MAPS_API_KEY}
               apiOptions={{ language: 'en', region: 'ca' }}
               autocompletionRequest={{
                 componentRestrictions: {
@@ -267,6 +266,6 @@ function SequenceTripForm(props: Props) {
 }
 
 export default GoogleApiWrapper({
-  apiKey: publicRuntimeConfig.GOOGLE_MAPS_API_KEY,
+  apiKey: process.env.GOOGLE_MAPS_API_KEY!,
   libraries: ['places'],
 })(SequenceTripForm)

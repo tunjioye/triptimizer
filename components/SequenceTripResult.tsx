@@ -19,7 +19,6 @@ import {
   WhatsappIcon,
   WhatsappShareButton,
 } from 'react-share'
-import { publicRuntimeConfig } from '@/config'
 import { FaCopy, FaMap } from 'react-icons/fa'
 import { MdCopyAll, MdMap, MdPrint } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
@@ -91,7 +90,7 @@ function SequenceTripResult(props: Props) {
       .join('\n')
   }, [selectedAddressOptimalTrip])
 
-  const shareUrl = `${publicRuntimeConfig.APP_URL}?trip=${requestId}`
+  const shareUrl = `${process.env.APP_URL}?trip=${requestId}`
   const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`
   const copyResult = async () => {
     try {
@@ -328,7 +327,7 @@ function SequenceTripResult(props: Props) {
                             url={shareUrl}
                             title={shareTitle}
                             summary={`Optimal route FROM ${selectedAddress}`}
-                            source={publicRuntimeConfig.APP_URL}
+                            source={process.env.APP_URL}
                             data-tooltip="LinkedIn"
                           >
                             <LinkedinIcon size={SHARE_BUTTOn_SIZE} round />

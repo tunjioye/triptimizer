@@ -1,10 +1,15 @@
 import { Distance, Duration } from '@googlemaps/google-maps-services-js'
 import GooglePlacesAutocompleteProps, { Option } from 'react-google-places-autocomplete/build/types'
 
-export type PublicRuntimeConfig = {
+export type AppEnv = NodeJS.ProcessEnv & {
   APP_NAME: string
   APP_URL: string
   GOOGLE_MAPS_API_KEY: string
+  [key: string]: string
+}
+
+export type PublicRuntimeConfig = {
+  APP_NAME: string
 }
 
 export type ServerRuntimeConfig = {
