@@ -29,6 +29,18 @@ function SequenceTrip() {
     setStep(newStep)
   }
 
+  // set step to 2 when pass is set
+  useEffect(() => {
+    if (pass) {
+      const timeoutId = setTimeout(() => {
+        setStep(2)
+      })
+      return () => {
+        clearTimeout(timeoutId)
+      }
+    }
+  }, [pass])
+
   // save trip result to KV
   useEffect(() => {
     if (optimalTrip != null) {
