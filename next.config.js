@@ -10,9 +10,9 @@ const nextConfig = {
     KV_REST_API_TOKEN: process.env.KV_REST_API_TOKEN,
     KV_REST_API_READ_ONLY_TOKEN: process.env.KV_REST_API_READ_ONLY_TOKEN,
     // app env
-    APP_NAME: process.env.APP_NAME,
-    APP_URL: process.env.APP_URL,
-    GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
+    NEXT_PUBLIC_APP_NAME: process.env.APP_NAME,
+    NEXT_PUBLIC_APP_URL: process.env.APP_URL,
+    NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: process.env.GOOGLE_MAPS_API_KEY,
   },
   serverRuntimeConfig: {
     // will be available only on server-side

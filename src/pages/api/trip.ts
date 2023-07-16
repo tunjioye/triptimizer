@@ -11,7 +11,7 @@ const googleMapsClient = new Client({
   axiosInstance: axios.create({
     timeout: 30000,
     params: {
-      key: process.env.GOOGLE_MAPS_API_KEY,
+      key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
     },
   }),
 })

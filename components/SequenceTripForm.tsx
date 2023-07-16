@@ -83,7 +83,7 @@ function SequenceTripForm(props: Props) {
         <form onSubmit={(e) => e.preventDefault()} className={styles.sequenceTripForm}>
           <div style={{ width: 'calc(100% - 100px - 0.5rem)' }}>
             <GooglePlacesAutocomplete
-              apiKey={process.env.GOOGLE_MAPS_API_KEY}
+              apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}
               apiOptions={{ language: 'en', region: 'ca' }}
               autocompletionRequest={{
                 componentRestrictions: {
@@ -266,6 +266,6 @@ function SequenceTripForm(props: Props) {
 }
 
 export default GoogleApiWrapper({
-  apiKey: process.env.GOOGLE_MAPS_API_KEY!,
+  apiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY!,
   libraries: ['places'],
 })(SequenceTripForm)
