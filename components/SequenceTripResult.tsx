@@ -22,6 +22,7 @@ import {
 import { FaCopy, FaMap } from 'react-icons/fa'
 import { MdCopyAll, MdMap, MdPrint } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
+import { prettyMinsDuration } from '@/utils'
 
 const SHARE_BUTTOn_SIZE = 48
 
@@ -64,7 +65,7 @@ function SequenceTripResult(props: Props) {
     return optimalTrips.find((trip) => trip.startAddress === selectedAddress)
   }, [optimalTrips, selectedAddress])
 
-  const [totalDistance, totalDuration] = useMemo(() => {
+  const [totalDistanceInKm, totalDurationInMins] = useMemo(() => {
     if (selectedAddressOptimalTrip == null) {
       return [null, null]
     }
@@ -312,9 +313,15 @@ function SequenceTripResult(props: Props) {
                           <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                             <b>TOTAL DISTANCE & DURATION</b>
                           </span>
-                          <span>
-                            <b>{totalDistance} km</b> ~ <b>{totalDuration} mins</b>
-                          </span>
+                          {totalDistanceInKm && totalDurationInMins ? (
+                            <span>
+                              <b>{totalDistanceInKm} km</b>
+                              <span> ~ </span>
+                              <b>{prettyMinsDuration(totalDurationInMins, { verbose: true })}</b>
+                            </span>
+                          ) : (
+                            <span>N/A</span>
+                          )}
                         </li>
                       </ol>
                     )}
