@@ -9,7 +9,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const pass = new PassService()
       const payload = await pass.addUserToSheet(req.body as PassApiRequestBody)
       if (payload) {
-        sendMail({
+        const res = await sendMail({
           subject: 'Triptimizer - New Early Access User',
           html: `
           <div>
@@ -25,9 +25,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
             <p>Created: ${payload.user.created}</p>
           </div>
           `,
-        }).then((res) => {
-          console.log(res)
         })
+        console.log(res)
       }
       res.status(200).json({ payload })
     } catch (e: any) {
