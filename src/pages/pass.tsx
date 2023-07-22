@@ -42,7 +42,7 @@ function PassPage() {
       const parsedPhone = parsePhoneNumber(formState.phone)
       if (!parsedPhone || !parsedPhone.isValid()) {
         const errorMessage = 'Invalid phone number'
-        window.alert(errorMessage)
+        toast.error(errorMessage)
         throw new Error(errorMessage)
       }
 
