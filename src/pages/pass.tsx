@@ -1,6 +1,6 @@
-import { PassApiResponse } from '@/schema/types'
 import { requestForPass } from '@/store/page'
 import React, { useState } from 'react'
+import Head from 'next/head'
 import { toast } from 'react-hot-toast'
 import PhoneInput, { parsePhoneNumber } from 'react-phone-number-input'
 
@@ -69,107 +69,112 @@ function PassPage() {
   }
 
   return (
-    <main className="container">
-      <hgroup>
-        <h2>Get Pass</h2>
-        <p>Register for early access to get pass</p>
-      </hgroup>
+    <>
+      <Head>
+        <title>Triptimizer - Get Pass</title>
+      </Head>
+      <main className="container">
+        <hgroup>
+          <h2>Get Pass</h2>
+          <p>Register for early access to get pass</p>
+        </hgroup>
 
-      <form onSubmit={onSubmit}>
-        <div className="grid">
-          <label htmlFor="firstname">
-            First name
-            <input
-              type="text"
-              id="firstname"
-              name="firstname"
-              placeholder="First name"
-              required
-              value={formState.firstname}
-              onChange={handleChange}
-            />
-          </label>
-
-          <label htmlFor="lastname">
-            Last name
-            <input
-              type="text"
-              id="lastname"
-              name="lastname"
-              placeholder="Last name"
-              required
-              value={formState.lastname}
-              onChange={handleChange}
-            />
-          </label>
-        </div>
-
-        <div className="grid">
-          <label htmlFor="email">
-            Email address
-            <input
-              type="email"
-              id="email"
-              name="email"
-              placeholder="Email address"
-              required
-              value={formState.email}
-              onChange={handleChange}
-            />
-            <small>We may contact you.</small>
-          </label>
-
-          <label htmlFor="phone">
-            Phone number
-            <PhoneInput
-              defaultCountry="CA"
-              countries={['CA', 'US']}
-              placeholder="Phone number"
-              value={formState.phone}
-              onChange={(phone) => setFormState({ ...formState, phone })}
-            />
-          </label>
-        </div>
-
-        <div className="grid">
-          <label htmlFor="professionOption">
-            Select Profession
-            <select
-              id="professionOption"
-              required
-              name="professionOption"
-              value={formState.professionOption}
-              onChange={handleChange}
-            >
-              <option value="Realtor">Realtor</option>
-              <option value="Other">Other</option>
-            </select>
-          </label>
-          {formState.professionOption === 'Other' && (
-            <label htmlFor="profession">
-              Profession
+        <form onSubmit={onSubmit}>
+          <div className="grid">
+            <label htmlFor="firstname">
+              First name
               <input
                 type="text"
-                id="profession"
-                name="profession"
-                placeholder="Profession"
+                id="firstname"
+                name="firstname"
+                placeholder="First name"
                 required
-                value={formState.profession}
+                value={formState.firstname}
                 onChange={handleChange}
               />
             </label>
-          )}
-        </div>
+
+            <label htmlFor="lastname">
+              Last name
+              <input
+                type="text"
+                id="lastname"
+                name="lastname"
+                placeholder="Last name"
+                required
+                value={formState.lastname}
+                onChange={handleChange}
+              />
+            </label>
+          </div>
+
+          <div className="grid">
+            <label htmlFor="email">
+              Email address
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Email address"
+                required
+                value={formState.email}
+                onChange={handleChange}
+              />
+              <small>We may contact you.</small>
+            </label>
+
+            <label htmlFor="phone">
+              Phone number
+              <PhoneInput
+                defaultCountry="CA"
+                countries={['CA', 'US']}
+                placeholder="Phone number"
+                value={formState.phone}
+                onChange={(phone) => setFormState({ ...formState, phone })}
+              />
+            </label>
+          </div>
+
+          <div className="grid">
+            <label htmlFor="professionOption">
+              Select Profession
+              <select
+                id="professionOption"
+                required
+                name="professionOption"
+                value={formState.professionOption}
+                onChange={handleChange}
+              >
+                <option value="Realtor">Realtor</option>
+                <option value="Other">Other</option>
+              </select>
+            </label>
+            {formState.professionOption === 'Other' && (
+              <label htmlFor="profession">
+                Profession
+                <input
+                  type="text"
+                  id="profession"
+                  name="profession"
+                  placeholder="Profession"
+                  required
+                  value={formState.profession}
+                  onChange={handleChange}
+                />
+              </label>
+            )}
+          </div>
+
+          <br />
+
+          <button type="submit" aria-busy={submitting}>
+            Register for Early Access
+          </button>
+        </form>
 
         <br />
-
-        <button type="submit" aria-busy={submitting}>
-          Register for Early Access
-        </button>
-      </form>
-
-      <br />
-    </main>
+      </main>
+    </>
   )
 }
 
