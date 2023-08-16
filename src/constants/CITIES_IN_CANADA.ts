@@ -360,4 +360,6 @@ export const CITIES_IN_CANADA = [
   'Carcross',
   'Whitehorse',
   'Dawson',
+  // Additional
+  'Bolton',
 ]
