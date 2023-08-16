@@ -91,7 +91,7 @@ function SequenceTripResult(props: Props) {
       .join('\n')
   }, [selectedAddressOptimalTrip])
 
-  const shareUrl = `${process.env.APP_URL}?trip=${requestId}`
+  const shareUrl = `${process.env.NEXT_PUBLIC_APP_URL}?trip=${requestId}`
   const shareTitle = `Optimal route \nFROM \n${selectedAddress} \nTO \n${toAddresses}.\n`
   const copyResult = async () => {
     try {
@@ -334,7 +334,7 @@ function SequenceTripResult(props: Props) {
                             url={shareUrl}
                             title={shareTitle}
                             summary={`Optimal route FROM ${selectedAddress}`}
-                            source={process.env.APP_URL}
+                            source={process.env.NEXT_PUBLIC_APP_URL}
                             data-tooltip="LinkedIn"
                           >
                             <LinkedinIcon size={SHARE_BUTTOn_SIZE} round />
