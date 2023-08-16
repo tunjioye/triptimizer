@@ -10,7 +10,7 @@ function Footer() {
         </ul>
         <ul className="hide-on-print">
           <li>
-            <a href="mailto:" target="_blank" rel="noreferrer">
+            <a href="mailto:support@triptimizer.com" target="_blank" rel="noreferrer">
               <FaEnvelope />
             </a>
           </li>
