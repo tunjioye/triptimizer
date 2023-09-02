@@ -27,14 +27,15 @@ export const getOptimalTrips = (
       })
       const minDistance = Math.min(...unvisitedElements.map((a) => a.distance.value))
       const minDuration = Math.min(...unvisitedElements.map((a) => a.duration.value))
-      const findFn = (a: DistanceMatrixRowElement) => {
+      const findMinFn = (a: DistanceMatrixRowElement) => {
+        if (routeIndices.includes(addressElements.indexOf(a))) return false // skip visited addresses
         if (optimizeBy === 'distance') {
           return a.distance.value === minDistance
         }
         return a.duration.value === minDuration
       }
-      const minElement = addressElements.find(findFn)
-      const minElementIndex = addressElements.findIndex(findFn)
+      const minElement = addressElements.find(findMinFn)
+      const minElementIndex = addressElements.findIndex(findMinFn)
       if (!minElement) break
 
       routeIndices.push(minElementIndex)
