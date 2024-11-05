@@ -24,7 +24,7 @@ import { MdCopyAll, MdMap, MdPrint } from 'react-icons/md'
 import { toast } from 'react-hot-toast'
 import { prettyMinsDuration } from '@/utils'
 
-const SHARE_BUTTOn_SIZE = 48
+const SHARE_BUTTON_SIZE = 48
 
 type Props = {
   readonly showHeading?: boolean
@@ -337,7 +337,7 @@ function SequenceTripResult(props: Props) {
                             source={process.env.NEXT_PUBLIC_APP_URL}
                             data-tooltip="LinkedIn"
                           >
-                            <LinkedinIcon size={SHARE_BUTTOn_SIZE} round />
+                            <LinkedinIcon size={SHARE_BUTTON_SIZE} round />
                           </LinkedinShareButton>
                           <TwitterShareButton
                             url={shareUrl}
@@ -345,14 +345,14 @@ function SequenceTripResult(props: Props) {
                             hashtags={['triptimizer', 'optimalroute', 'optimaltrip']}
                             data-tooltip="Twitter"
                           >
-                            <TwitterIcon size={SHARE_BUTTOn_SIZE} round />
+                            <TwitterIcon size={SHARE_BUTTON_SIZE} round />
                           </TwitterShareButton>
                           <WhatsappShareButton
                             url={shareUrl}
                             title={shareTitle}
                             data-tooltip="WhatsApp"
                           >
-                            <WhatsappIcon size={SHARE_BUTTOn_SIZE} round />
+                            <WhatsappIcon size={SHARE_BUTTON_SIZE} round />
                           </WhatsappShareButton>
                           <FacebookShareButton
                             url={shareUrl}
@@ -360,14 +360,14 @@ function SequenceTripResult(props: Props) {
                             hashtag="#triptimizer"
                             data-tooltip="Facebook"
                           >
-                            <FacebookIcon size={SHARE_BUTTOn_SIZE} round />
+                            <FacebookIcon size={SHARE_BUTTON_SIZE} round />
                           </FacebookShareButton>
                           <TelegramShareButton
                             url={shareUrl}
                             title={shareTitle}
                             data-tooltip="Telegram"
                           >
-                            <TelegramIcon size={SHARE_BUTTOn_SIZE} round />
+                            <TelegramIcon size={SHARE_BUTTON_SIZE} round />
                           </TelegramShareButton>
                           <EmailShareButton
                             url={shareUrl}
@@ -375,23 +375,23 @@ function SequenceTripResult(props: Props) {
                             body={shareTitle}
                             data-tooltip="Email"
                           >
-                            <EmailIcon size={SHARE_BUTTOn_SIZE} round />
+                            <EmailIcon size={SHARE_BUTTON_SIZE} round />
                           </EmailShareButton>
                           <button
                             type="button"
                             style={{
-                              minWidth: SHARE_BUTTOn_SIZE,
-                              maxWidth: SHARE_BUTTOn_SIZE,
-                              minHeight: SHARE_BUTTOn_SIZE,
-                              maxHeight: SHARE_BUTTOn_SIZE,
-                              borderRadius: SHARE_BUTTOn_SIZE,
+                              minWidth: SHARE_BUTTON_SIZE,
+                              maxWidth: SHARE_BUTTON_SIZE,
+                              minHeight: SHARE_BUTTON_SIZE,
+                              maxHeight: SHARE_BUTTON_SIZE,
+                              borderRadius: SHARE_BUTTON_SIZE,
                               padding: 0,
                             }}
                             onClick={window.print}
                             data-tooltip="Print Result"
                           >
                             <MdPrint
-                              size={SHARE_BUTTOn_SIZE / 2}
+                              size={SHARE_BUTTON_SIZE / 2}
                               style={{ marginTop: '-0.25rem' }}
                             />
                           </button>
@@ -399,35 +399,35 @@ function SequenceTripResult(props: Props) {
                             type="button"
                             className="secondary"
                             style={{
-                              minWidth: SHARE_BUTTOn_SIZE,
-                              maxWidth: SHARE_BUTTOn_SIZE,
-                              minHeight: SHARE_BUTTOn_SIZE,
-                              maxHeight: SHARE_BUTTOn_SIZE,
-                              borderRadius: SHARE_BUTTOn_SIZE,
+                              minWidth: SHARE_BUTTON_SIZE,
+                              maxWidth: SHARE_BUTTON_SIZE,
+                              minHeight: SHARE_BUTTON_SIZE,
+                              maxHeight: SHARE_BUTTON_SIZE,
+                              borderRadius: SHARE_BUTTON_SIZE,
                               padding: 0,
                             }}
                             onClick={copyShareUrl}
                             data-tooltip="Copy Result Link"
                           >
                             <MdCopyAll
-                              size={SHARE_BUTTOn_SIZE / 2}
+                              size={SHARE_BUTTON_SIZE / 2}
                               style={{ marginTop: '-0.25rem' }}
                             />
                           </button>
                           <button
                             type="button"
                             style={{
-                              minWidth: SHARE_BUTTOn_SIZE,
-                              maxWidth: SHARE_BUTTOn_SIZE,
-                              minHeight: SHARE_BUTTOn_SIZE,
-                              maxHeight: SHARE_BUTTOn_SIZE,
-                              borderRadius: SHARE_BUTTOn_SIZE,
+                              minWidth: SHARE_BUTTON_SIZE,
+                              maxWidth: SHARE_BUTTON_SIZE,
+                              minHeight: SHARE_BUTTON_SIZE,
+                              maxHeight: SHARE_BUTTON_SIZE,
+                              borderRadius: SHARE_BUTTON_SIZE,
                               padding: 0,
                             }}
                             onClick={openInGoogleMap}
                             data-tooltip="Open in Google Map"
                           >
-                            <MdMap size={SHARE_BUTTOn_SIZE / 2} style={{ marginTop: '-0.25rem' }} />
+                            <MdMap size={SHARE_BUTTON_SIZE / 2} style={{ marginTop: '-0.25rem' }} />
                           </button>
                         </div>
                       </div>
