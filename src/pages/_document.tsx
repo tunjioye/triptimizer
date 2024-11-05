@@ -13,8 +13,8 @@ export default function Document() {
           property="og:description"
           content="Triptimizer is an innovative web application designed to streamline the process of planning and optimizing your trips"
         />
-        <meta property="og:url" content="https://test.triptimizer.com" />
-        <meta property="og:image" content="https://test.triptimizer.com/triptimizer-1.jpg" />
+        <meta property="og:url" content="https://triptimizer.com" />
+        <meta property="og:image" content="https://triptimizer.com/triptimizer-1.jpg" />
         {/* favicons */}
         <link rel="apple-touch-icon" sizes="180x180" href="/favicons/apple-touch-icon.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/favicons/favicon-32x32.png" />

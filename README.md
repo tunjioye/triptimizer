@@ -2,7 +2,7 @@
 
 # Triptimizer
 
-[Triptimizer](https://test.triptimizer.com) is an innovative web application designed to streamline the process of planning and optimizing your trips. With Triptimizer, you can effortlessly generate the most efficient routes for your journeys, taking into account either the shortest distance or the shortest time to reach multiple destinations.
+[Triptimizer](https://triptimizer.com) is an innovative web application designed to streamline the process of planning and optimizing your trips. With Triptimizer, you can effortlessly generate the most efficient routes for your journeys, taking into account either the shortest distance or the shortest time to reach multiple destinations.
 
 Gone are the days of manually plotting routes or relying on guesswork to plan your trips. Triptimizer harnesses advanced algorithms and cutting-edge mapping technologies to provide you with optimal routes that save you time, money, and energy.
 
