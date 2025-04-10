@@ -115,7 +115,7 @@ function SequenceTrip() {
             data-step={3}
             open={step === 3}
             onClick={(e) => e.preventDefault()}
-            className={clsx({ disabled: pass.trim() === '' || optimalTrip == null })}
+            className={clsx({ disabled: !isViewingResult && (pass.trim() === '' || optimalTrip == null) })}
           >
             <summary onClick={() => changeToStep(3)}>
               <strong
